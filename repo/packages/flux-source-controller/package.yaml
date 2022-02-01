@@ -1,0 +1,27 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: flux-source-controller.tap.oss.0.21.1
+spec:
+  capacityRequirementsDescription: Varies significantly based on number of repos being synced
+  licenses:
+  - Apache 2.0
+  refName: flux-source-controller.tap.oss
+  releaseNotes: Flux Source Controller v0.21.1 https://github.com/fluxcd/source-controller/releases/tag/v0.21.1
+  releasedAt: "2022-01-27T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  version: 0.21.1

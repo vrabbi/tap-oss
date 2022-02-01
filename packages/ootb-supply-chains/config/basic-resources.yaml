@@ -1,0 +1,155 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterSourceTemplate
+metadata:
+  name: source
+spec:
+  urlPath: .status.artifact.url
+  revisionPath: .status.artifact.revision
+
+  template:
+    apiVersion: source.toolkit.fluxcd.io/v1beta1
+    kind: GitRepository
+    metadata:
+      name: $(workload.metadata.name)$
+    spec:
+      interval: 1m0s
+      url: $(workload.spec.source.git.url)$
+      ref: $(workload.spec.source.git.ref)$
+      gitImplementation: libgit2
+      ignore: ""
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterImageTemplate
+metadata:
+  name: image
+spec:
+  params:
+    - name: image_prefix
+      default: projectcartographer/demo-
+
+  imagePath: .status.latestImage
+  ytt: |
+    #@ load("@ytt:data", "data")
+    apiVersion: kpack.io/v1alpha2
+    kind: Image
+    metadata:
+      name: #@ data.values.workload.metadata.name
+    spec:
+      tag: #@ "".join([data.values.params.image_prefix,data.values.workload.metadata.name])
+      serviceAccountName: default
+      build:
+        #@ if hasattr(data.values.workload.spec.build, "env"):
+        env:
+        #@ for var in data.values.workload.spec.build.env:
+        - name: #@ var.name
+          value: #@ var.value
+        #@ end
+        #@ end
+      builder:
+       kind: ClusterBuilder
+       name: builder
+      source:
+        blob:
+          url: #@ data.values.source.url
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: app-deploy
+spec:
+  ytt: |
+    #@ load("@ytt:data", "data")
+    #@ load("@ytt:yaml", "yaml")  
+    #@ def service():
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    metadata:
+      name: #@ data.values.workload.metadata.name
+    spec:
+      template:
+        metadata:
+          annotations:
+            autoscaling.knative.dev/minScale: "1"
+        spec:
+          serviceAccountName: default
+          containers:
+            - name: workload
+              #@ if hasattr(data.values.workload.spec.build, "env"):
+              env:
+              #@ for var in data.values.workload.spec.env:
+              - name: #@ var.name
+                value: #@ var.value
+              #@ end
+              #@ end
+              image: #@ data.values.images.image.image
+              securityContext:
+                runAsUser: 1000
+    #@ end
+    #@ def config():
+    apiVersion: kapp.k14s.io/v1alpha1
+    kind: Config
+    rebaseRules:
+      - path:
+          - metadata
+          - annotations
+          - serving.knative.dev/creator
+        type: copy
+        sources: [new, existing]
+        resourceMatchers: &matchers
+          - apiVersionKindMatcher:
+              apiVersion: serving.knative.dev/v1
+              kind: Service
+      - path:
+          - metadata
+          - annotations
+          - serving.knative.dev/lastModifier
+        type: copy
+        sources: [new, existing]
+        resourceMatchers: *matchers
+    #@ end
+    apiVersion: kappctrl.k14s.io/v1alpha1
+    kind: App
+    metadata:
+      name: #@ data.values.workload.metadata.name
+    spec:
+      serviceAccountName: default
+      fetch:
+        - inline:
+            paths:
+              manifest.yml: #@ yaml.encode(service()) + "---\n" + yaml.encode(config())
+      template:
+        - ytt: {}
+      deploy:
+        - kapp: {}
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterSupplyChain
+metadata:
+  name: ootb-basic-supply-chain
+spec:
+  selector:
+    apps.tanzu.vmware.com/workload-type: web
+  resources:
+    - name: source-provider
+      templateRef:
+        kind: ClusterSourceTemplate
+        name: source
+    - name: image-builder
+      templateRef:
+        kind: ClusterImageTemplate
+        name: image
+      params:
+        - name: image_prefix
+          value: #@ data.values.image_prefix
+      sources:
+        - resource: source-provider
+          name: source
+    - name: deployer
+      templateRef:
+        kind: ClusterTemplate
+        name: app-deploy
+      images:
+        - resource: image-builder
+          name: image

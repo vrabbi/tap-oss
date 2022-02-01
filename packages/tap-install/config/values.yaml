@@ -1,0 +1,82 @@
+#@data/values-schema
+---
+#@schema/desc "TCE Kpack package configuration"
+kpack:
+  #@schema/desc "Default repo for kpack resources and images"
+  kp_default_repository: "harbor.tap.oss"
+  #@schema/desc "Password for the default repo for kpack resources and images"
+  kp_default_repository_password: "Harbor12345"
+  #@schema/desc "User for the default repo for kpack resources and images"
+  kp_default_repository_username: "admin"
+
+#@schema/desc "Automates the creation of an OSS builder, stack and store based on the paketo buildpacks"
+kpack_config:
+  builder: 
+    #@schema/desc "The Image Tag for the builder in the registry"
+    tag: "harbor.tap.oss/library/builder"
+  registry:
+    #@schema/desc "Registry Username for storing the cluster builder artifacts"
+    username: "admin"
+    #@schema/desc "Registry Password for storing the cluster builder artifacts"
+    password: "Harbor12345"
+    #@schema/desc "Registry Server for storing the cluster builder artifacts"
+    server: "harbor.tap.oss"
+
+#@schema/desc "knative serving configuration"
+knative:
+  ingress:
+    domain:
+      #@schema/desc "Your own domain name if type is real or empty if type is sslip.io or nip.io."
+      name: "tap.oss"
+      #@schema/desc "The type of DNS service. Allowable values are real, sslip.io"
+      type: real
+#@schema/desc "Settings for auto configuring RBAC and configuration for Dev Namespaces"
+dev_ns_preperation:
+  registry:
+    #@schema/desc 'Registry of the repo images will be pushed to'
+    username: "harbor.tap.oss"
+    #@schema/desc 'Username for repo images will be pushed to'
+    password: "admin"
+    #@schema/desc 'Password for repo images will be pushed to'
+    server: "Harbor12345"
+  namespaces:
+    #@schema/desc 'Namespace name'
+  - name: "default"
+    #@schema/desc 'If false, we will create the namespace and manage its lifecycle, if true, the namespace must already exist'
+    exists: true
+    #@schema/desc 'If true, will create an example Tekton pipeline for the chosen language'
+    createPipeline: true
+    #@schema/desc 'Supported languages are go and java'
+    language: go
+#@schema/desc "Settings for auto configuring OOTB Supply Chains"
+ootb_supply_chains:
+  #@schema/desc "Image Prefix for workload images to be created with"
+  image_prefix: ""
+  #@schema/desc "Image Prefix for workload images to be created with"
+  gitops:
+    #@schema/desc "Should Gitops Supply chain be created and configured"
+    configure: true
+    git_writer:
+      #@schema/desc "Commit message "
+      message: "TAP OSS Based Update of app configuration"
+      #@schema/desc "SSH Username for Git Authentication"
+      ssh_user: "git"
+      #@schema/desc "Git FQDN"
+      server: "github.com"
+      #@schema/desc "Git repo we will save manifests in"
+      repository: ""
+      #@schema/desc "Base64 encoded SSH Key for Git Authentication"
+      base64_encoded_ssh_key: ""
+      #@schema/desc "Base64 encoded Known Hosts for the Git Endpoint (skips verification if left empty)"
+      base64_encoded_known_hosts: ""
+      #@schema/desc "Git Branch to push manifests to"
+      branch: "main"
+      #@schema/desc "Git username"
+      username: ""
+      #@schema/desc "Git Email Address"
+      user_email: ""
+      #@schema/desc "Git Port (Only needed if using a custom port)"
+      port: ""
+  testing:
+    #@schema/desc "Should Testing Supply chain be created and configured"
+    configure: true

@@ -1,0 +1,34 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: cartographer.tap.oss.0.2.1
+  annotations:
+    kapp.k14s.io/change-group: carto.run/meta
+spec:
+  refName: cartographer.tap.oss
+  version: 0.2.1
+  releaseNotes: https://github.com/vmware-tanzu/cartographer/releases/tag/v0.2.1
+  releasedAt: "2022-01-24T16:10:07Z"
+  valuesSchema:
+    openAPIv3:
+      properties: {}
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/cartographer-package:0.2.1
+      template:
+      - ytt:
+          ignoreUnknownComments: true
+          inline:
+            paths:
+              namespace.yaml: |-
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                  name: cartographer-system
+      - kbld: {}
+      deploy:
+      - kapp:
+          rawOptions:
+          - --wait-timeout=5m

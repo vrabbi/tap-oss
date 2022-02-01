@@ -1,0 +1,91 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: ootb-supply-chains.tap.oss.0.1.0
+spec:
+  licenses:
+  - Apache 2.0
+  refName: ootb-supply-chains.tap.oss
+  releaseNotes: ootb-supply-chains 0.1.0 for OSS TAP based on Cartographer examples
+  releasedAt: "2022-01-31T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
+      template:
+      - ytt:
+          paths:
+          - config/
+  valuesSchema:
+    openAPIv3:
+      properties:
+        image_prefix:
+          type: string
+          default: ""
+          description: Image Prefix for workload images to be created with
+        gitops:
+          type: object
+          additionalProperties: false
+          description: Image Prefix for workload images to be created with
+          properties:
+            configure:
+              type: boolean
+              default: true
+              description: Should Gitops Supply chain be created and configured
+            git_writer:
+              type: object
+              additionalProperties: false
+              properties:
+                message:
+                  type: string
+                  default: TAP OSS Based Update of app configuration
+                  description: 'Commit message '
+                ssh_user:
+                  type: string
+                  default: git
+                  description: SSH Username for Git Authentication
+                server:
+                  type: string
+                  default: github.com
+                  description: Git FQDN
+                repository:
+                  type: string
+                  default: ""
+                  description: Git repo we will save manifests in
+                base64_encoded_ssh_key:
+                  type: string
+                  default: ""
+                  description: Base64 encoded SSH Key for Git Authentication
+                base64_encoded_known_hosts:
+                  type: string
+                  default: ""
+                  description: Base64 encoded Known Hosts for the Git Endpoint (skips verification if left empty)
+                branch:
+                  type: string
+                  default: main
+                  description: Git Branch to push manifests to
+                username:
+                  type: string
+                  default: ""
+                  description: Git username
+                user_email:
+                  type: string
+                  default: ""
+                  description: Git Email Address
+                port:
+                  type: string
+                  default: ""
+                  description: Git Port (Only needed if using a custom port)
+        testing:
+          type: object
+          additionalProperties: false
+          properties:
+            configure:
+              type: boolean
+              default: true
+              description: Should Testing Supply chain be created and configured
+      title: ootb-supply-chains.tap.oss 0.1.0 values schema
+  version: 0.1.0

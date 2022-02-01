@@ -1,0 +1,12 @@
+#@data/values-schema
+---
+builder:
+  #@schema/desc "The Image Tag for the builder in the registry"
+  tag: "harbor.tap.oss/library/builder"
+registry:
+  #@schema/desc "Registry Username for storing the cluster builder artifacts"
+  username: "admin"
+  #@schema/desc "Registry Password for storing the cluster builder artifacts"
+  password: "Harbor12345"
+  #@schema/desc "Registry Server for storing the cluster builder artifacts"
+  server: "harbor.tap.oss"

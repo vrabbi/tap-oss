@@ -1,0 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tap-oss-install-cluster-admin-role
+  annotations:
+    kapp.k14s.io/change-group: serviceaccount
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tap-oss-install-cluster-admin-role-binding
+  annotations:
+    kapp.k14s.io/change-group: serviceaccount
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: tap-oss-install-cluster-admin-role
+subjects:
+- kind: ServiceAccount
+  name: tap-oss-install-sa
+  namespace: tap-oss
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tap-oss-install-sa
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-group: serviceaccount

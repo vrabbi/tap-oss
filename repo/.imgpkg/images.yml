@@ -1,0 +1,65 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/cartographer-package:0.2.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.2.1
+          url: ghcr.io/vrabbi/cartographer-package:0.2.1
+  image: ghcr.io/vrabbi/cartographer-package@sha256:d2c94525e9ab44ee50b5a0e187dc7006a6d7229872f7fd16e6dc07b2b3603ed7
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/dev-ns-preperation-package:0.1.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.0
+          url: ghcr.io/vrabbi/dev-ns-preperation-package:0.1.0
+  image: ghcr.io/vrabbi/dev-ns-preperation-package@sha256:a97429d9d9ce3f7045d602d9b22930251af333b7c004e62e7bd9ff7ed1db7beb
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: v0.21.1
+          url: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
+  image: ghcr.io/vrabbi/flux-source-controller-package@sha256:e20ebc397001f4b274a92a821f15598fd960007d6b24bd5e8a7ddb1e2312927a
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.5.0
+          url: ghcr.io/vrabbi/kpack-config-package:0.5.0
+  image: ghcr.io/vrabbi/kpack-config-package@sha256:ded2c88cf95894c5fcf9411efcba926abc06c109b3c3eb9ee94910414f2c88c3
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.0
+          url: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
+  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:81c3c8c9a7db7cde3005bb380c7b19c1f7902c2b0c452a05ac87f94685c6ca3a
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.0
+          url: ghcr.io/vrabbi/tap-oss-package:0.1.0
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:ac5d5c7a67fa847c576a1db7f44910a0e6012afce62a9a60ada66f6118a4d916
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.32.1
+          url: ghcr.io/vrabbi/tekton-package:0.32.1
+  image: ghcr.io/vrabbi/tekton-package@sha256:0238fb73ce15879def01421afc5f3ae6aa749ef13bba0ab6d7c3a41006c496c7
+- annotations:
+    kbld.carvel.dev/id: projects.registry.vmware.com/tce/cert-manager@sha256:ca4c551c1e9c5bc0e2b554f20651c9538c97a1159ccf9c9b640457e18cdec039
+  image: projects.registry.vmware.com/tce/cert-manager@sha256:ca4c551c1e9c5bc0e2b554f20651c9538c97a1159ccf9c9b640457e18cdec039
+- annotations:
+    kbld.carvel.dev/id: projects.registry.vmware.com/tce/contour@sha256:be540433d503c870a589570f541eb40482271f3e27ac3563c33d42c1bd3b0647
+  image: projects.registry.vmware.com/tce/contour@sha256:be540433d503c870a589570f541eb40482271f3e27ac3563c33d42c1bd3b0647
+- annotations:
+    kbld.carvel.dev/id: projects.registry.vmware.com/tce/knative-serving@sha256:648b8eb811806513e9681912899be3bdd086b8b7d99d0b7d52dbf44024ee858f
+  image: projects.registry.vmware.com/tce/knative-serving@sha256:648b8eb811806513e9681912899be3bdd086b8b7d99d0b7d52dbf44024ee858f
+- annotations:
+    kbld.carvel.dev/id: projects.registry.vmware.com/tce/kpack@sha256:8e83dca61e3574ea1bb0ea7a6aabec1cb317eebbedd212439f70b698df6a4ba5
+  image: projects.registry.vmware.com/tce/kpack@sha256:8e83dca61e3574ea1bb0ea7a6aabec1cb317eebbedd212439f70b698df6a4ba5
+kind: ImagesLock

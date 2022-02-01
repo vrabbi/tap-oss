@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: dev-ns-preperation.tap.oss
+spec:
+  categories:
+  - configuration
+  - tap-oss
+  displayName: Dev Namespace Preperation
+  longDescription: Provides an easy way to prepare namespaces for TAP workloads
+  maintainers:
+  - name: Scott Rosenberg
+  providerName: TeraSky
+  shortDescription: Dev Namespace Configuration

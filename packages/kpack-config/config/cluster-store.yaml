@@ -1,0 +1,15 @@
+apiVersion: kpack.io/v1alpha2
+kind: ClusterStore
+metadata:
+  name: default
+spec:
+  sources:
+  - image: gcr.io/paketo-buildpacks/java:latest
+  - image: gcr.io/paketo-buildpacks/nodejs:latest
+  - image: gcr.io/paketo-buildpacks/dotnet-core:latest
+  - image: gcr.io/paketo-buildpacks/spring-boot:latest
+  - image: gcr.io/paketo-buildpacks/go:latest
+  - image: gcr.io/paketo-buildpacks/python:latest
+  - image: gcr.io/paketo-buildpacks/ruby:latest
+  - image: gcr.io/paketo-buildpacks/procfile:latest
+  - image: gcr.io/paketo-buildpacks/nginx:latest

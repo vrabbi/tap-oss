@@ -1,0 +1,29 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: dev-ns-preperation
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-rule.serviceaccount: "delete before deleting serviceaccount"
+    kapp.k14s.io/change-rule.cartographer: "upsert after upserting cartographer"
+spec:
+  noopDelete: true
+  serviceAccountName: tap-oss-install-sa
+  packageRef:
+    refName: dev-ns-preperation.tap.oss
+    versionSelection:
+      constraints: 0.1.0
+  values:
+  - secretRef:
+      name: dev-ns-preperation-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: dev-ns-preperation-values
+  namespace: tap-oss
+stringData:
+  values.yaml: #@ yaml.encode(data.values.dev_ns_preperation)

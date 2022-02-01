@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: knative-serving.tap.oss
+spec:
+  categories:
+  - serverless
+  displayName: knative-serving
+  longDescription: Knative Serving builds on Kubernetes to support deploying and serving
+    of applications and functions as serverless containers
+  maintainers:
+  - name: Nicholas Seemiller
+  providerName: VMware
+  shortDescription: Knative Serving builds on Kubernetes to support deploying and
+    serving of applications and functions as serverless containers

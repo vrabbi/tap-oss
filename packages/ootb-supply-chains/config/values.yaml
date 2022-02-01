@@ -1,0 +1,18 @@
+#@data/values
+---
+image_prefix: ""
+gitops:
+  configure: true
+  git_writer:
+    message: "TAP OSS Based Update of app configuration"
+    ssh_user: "git"
+    server: "github.com"
+    repository: ""
+    base64_encoded_ssh_key: ""
+    base64_encoded_known_hosts: ""
+    branch: "main"
+    username: ""
+    user_email: ""
+    port: ""
+testing:
+  configure: true

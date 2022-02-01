@@ -1,0 +1,32 @@
+#@data/values-schema
+---
+#@schema/desc "Image Prefix for workload images to be created with"
+image_prefix: ""
+#@schema/desc "Image Prefix for workload images to be created with"
+gitops:
+  #@schema/desc "Should Gitops Supply chain be created and configured"
+  configure: true
+  git_writer:
+    #@schema/desc "Commit message "
+    message: "TAP OSS Based Update of app configuration"
+    #@schema/desc "SSH Username for Git Authentication"
+    ssh_user: "git"
+    #@schema/desc "Git FQDN"
+    server: "github.com"
+    #@schema/desc "Git repo we will save manifests in"
+    repository: ""
+    #@schema/desc "Base64 encoded SSH Key for Git Authentication"
+    base64_encoded_ssh_key: ""
+    #@schema/desc "Base64 encoded Known Hosts for the Git Endpoint (skips verification if left empty)"
+    base64_encoded_known_hosts: ""
+    #@schema/desc "Git Branch to push manifests to"
+    branch: "main"
+    #@schema/desc "Git username"
+    username: ""
+    #@schema/desc "Git Email Address"
+    user_email: ""
+    #@schema/desc "Git Port (Only needed if using a custom port)"
+    port: ""
+testing:
+  #@schema/desc "Should Testing Supply chain be created and configured"
+  configure: true

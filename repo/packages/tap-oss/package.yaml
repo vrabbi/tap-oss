@@ -1,0 +1,211 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: tap-install.tap.oss.0.1.0
+spec:
+  licenses:
+  - Apache 2.0
+  refName: tap-install.tap.oss
+  releaseNotes: TAP OSS Stack
+  releasedAt: "2022-01-31T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/tap-oss-package:0.1.0
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      properties:
+        kpack:
+          type: object
+          additionalProperties: false
+          description: TCE Kpack package configuration
+          properties:
+            kp_default_repository:
+              type: string
+              default: harbor.tap.oss
+              description: Default repo for kpack resources and images
+            kp_default_repository_password:
+              type: string
+              default: Harbor12345
+              description: Password for the default repo for kpack resources and images
+            kp_default_repository_username:
+              type: string
+              default: admin
+              description: User for the default repo for kpack resources and images
+        kpack_config:
+          type: object
+          additionalProperties: false
+          description: Automates the creation of an OSS builder, stack and store based on the paketo buildpacks
+          properties:
+            builder:
+              type: object
+              additionalProperties: false
+              properties:
+                tag:
+                  type: string
+                  default: harbor.tap.oss/library/builder
+                  description: The Image Tag for the builder in the registry
+            registry:
+              type: object
+              additionalProperties: false
+              properties:
+                username:
+                  type: string
+                  default: admin
+                  description: Registry Username for storing the cluster builder artifacts
+                password:
+                  type: string
+                  default: Harbor12345
+                  description: Registry Password for storing the cluster builder artifacts
+                server:
+                  type: string
+                  default: harbor.tap.oss
+                  description: Registry Server for storing the cluster builder artifacts
+        knative:
+          type: object
+          additionalProperties: false
+          description: knative serving configuration
+          properties:
+            ingress:
+              type: object
+              additionalProperties: false
+              properties:
+                domain:
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    name:
+                      type: string
+                      default: tap.oss
+                      description: Your own domain name if type is real or empty if type is sslip.io or nip.io.
+                    type:
+                      type: string
+                      default: real
+                      description: The type of DNS service. Allowable values are real, sslip.io
+        dev_ns_preperation:
+          type: object
+          additionalProperties: false
+          description: Settings for auto configuring RBAC and configuration for Dev Namespaces
+          properties:
+            registry:
+              type: object
+              additionalProperties: false
+              properties:
+                username:
+                  type: string
+                  default: harbor.tap.oss
+                  description: Registry of the repo images will be pushed to
+                password:
+                  type: string
+                  default: admin
+                  description: Username for repo images will be pushed to
+                server:
+                  type: string
+                  default: Harbor12345
+                  description: Password for repo images will be pushed to
+            namespaces:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                description: Namespace name
+                properties:
+                  name:
+                    type: string
+                    default: default
+                  exists:
+                    type: boolean
+                    default: true
+                    description: If false, we will create the namespace and manage its lifecycle, if true, the namespace must already exist
+                  createPipeline:
+                    type: boolean
+                    default: true
+                    description: If true, will create an example Tekton pipeline for the chosen language
+                  language:
+                    type: string
+                    default: go
+                    description: Supported languages are go and java
+              default: []
+        ootb_supply_chains:
+          type: object
+          additionalProperties: false
+          description: Settings for auto configuring OOTB Supply Chains
+          properties:
+            image_prefix:
+              type: string
+              default: ""
+              description: Image Prefix for workload images to be created with
+            gitops:
+              type: object
+              additionalProperties: false
+              description: Image Prefix for workload images to be created with
+              properties:
+                configure:
+                  type: boolean
+                  default: true
+                  description: Should Gitops Supply chain be created and configured
+                git_writer:
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    message:
+                      type: string
+                      default: TAP OSS Based Update of app configuration
+                      description: 'Commit message '
+                    ssh_user:
+                      type: string
+                      default: git
+                      description: SSH Username for Git Authentication
+                    server:
+                      type: string
+                      default: github.com
+                      description: Git FQDN
+                    repository:
+                      type: string
+                      default: ""
+                      description: Git repo we will save manifests in
+                    base64_encoded_ssh_key:
+                      type: string
+                      default: ""
+                      description: Base64 encoded SSH Key for Git Authentication
+                    base64_encoded_known_hosts:
+                      type: string
+                      default: ""
+                      description: Base64 encoded Known Hosts for the Git Endpoint (skips verification if left empty)
+                    branch:
+                      type: string
+                      default: main
+                      description: Git Branch to push manifests to
+                    username:
+                      type: string
+                      default: ""
+                      description: Git username
+                    user_email:
+                      type: string
+                      default: ""
+                      description: Git Email Address
+                    port:
+                      type: string
+                      default: ""
+                      description: Git Port (Only needed if using a custom port)
+            testing:
+              type: object
+              additionalProperties: false
+              properties:
+                configure:
+                  type: boolean
+                  default: true
+                  description: Should Testing Supply chain be created and configured
+      title: tap-install.tap.oss.0.1.0 values schema
+  version: 0.1.0

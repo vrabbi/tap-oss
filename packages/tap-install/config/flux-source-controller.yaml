@@ -1,0 +1,13 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: flux-source-controller
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-rule: "delete before deleting serviceaccount"
+spec:
+  serviceAccountName: tap-oss-install-sa
+  packageRef:
+    refName: flux-source-controller.tap.oss
+    versionSelection:
+      constraints: 0.21.1

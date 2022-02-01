@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: tap-install.tap.oss
+spec:
+  categories:
+  - tap-oss
+  displayName: tap-install
+  longDescription: Provides an easy installation of the Tanzu Application OSS components
+  maintainers:
+  - name: Scott Rosenberg
+  providerName: TeraSky
+  shortDescription: TAP OSS Installer

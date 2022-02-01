@@ -1,0 +1,26 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: tekton.tap.oss.0.32.1
+spec:
+  licenses:
+  - Apache 2.0
+  refName: tekton.tap.oss
+  releaseNotes: tekton 0.32.1 https://github.com/tektoncd/pipeline/releases/tag/v0.32.1
+  releasedAt: "2022-01-28T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/tekton-package:0.32.1
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  version: 0.32.1

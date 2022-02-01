@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: ootb-supply-chains.tap.oss
+spec:
+  categories:
+  - cartographer
+  - tap-oss
+  - supply chains
+  displayName: ootb-supply-chains
+  longDescription: Provides Out Of The Box Supply Chains for TAP OSS stack
+  maintainers:
+  - name: Scott Rosenberg
+  providerName: TeraSky
+  shortDescription: OOTB Supply Chains

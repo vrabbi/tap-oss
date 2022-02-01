@@ -1,0 +1,13 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: tekton-pipelines
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-rule: "delete before deleting serviceaccount"
+spec:
+  serviceAccountName: tap-oss-install-sa
+  packageRef:
+    refName: tekton.tap.oss
+    versionSelection:
+      constraints: 0.32.1

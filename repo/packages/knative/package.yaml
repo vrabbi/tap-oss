@@ -1,0 +1,86 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: knative-serving.tap.oss.1.0.0
+spec:
+  licenses:
+  - Apache 2.0
+  refName: knative-serving.tap.oss
+  releaseNotes: knative-serving 1.0.0 https://github.com/knative/serving/releases/tag/v1.0.0
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: projects.registry.vmware.com/tce/knative-serving@sha256:648b8eb811806513e9681912899be3bdd086b8b7d99d0b7d52dbf44024ee858f
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      properties:
+        domain:
+          description: |
+            Configuration for DNS. For full documentation, see: https://knative.dev/docs/install/install-serving-with-yaml/#configure-dns.
+          properties:
+            name:
+              default: ""
+              description: Your own domain name if type is real or empty if type is
+                sslip.io or nip.io.
+              type: string
+            type:
+              default: nip.io
+              description: The type of DNS service. Allowable values are real, sslip.io
+                and nip.io.
+              type: string
+          type: object
+        ingress:
+          description: |
+            Ingress configuration. Contour is the only ingress supported at this time. See https://knative.dev/docs/install/install-serving-with-yaml/#install-a-networking-layer To use separate external and internal services, provide the namespaces of the internal and external Contour ingress controllers. To use the same ingress service for both, specify the namespace of the Contour service.
+          properties:
+            external:
+              description: |
+                Configuration for the external ingress service.
+              properties:
+                namespace:
+                  default: projectcontour
+                  description: The namespace for the external ingress service.
+                  type: string
+              type: object
+            internal:
+              description: |
+                Configuration for the internal ingress service.
+              properties:
+                namespace:
+                  default: projectcontour
+                  description: The namespace for the internal ingress service.
+                  type: string
+              type: object
+          type: object
+        namespace:
+          default: knative-serving
+          description: The namespace in which to deploy Knative.
+          type: string
+        tls:
+          description: |
+            Configuration to enable TLS. For full documentation, see: https://knative.dev/docs/serving/using-auto-tls.
+          properties:
+            certmanager:
+              description: |
+                Configuration for cert-manager.
+              properties:
+                clusterissuer:
+                  default: ""
+                  description: The name of the cluster-issuer to use. Leave blank
+                    to not enable TLS
+                  type: string
+              type: object
+          type: object
+      title: knative-serving.tap.oss.1.0.0 values schema
+  version: 1.0.0

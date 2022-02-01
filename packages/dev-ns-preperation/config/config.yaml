@@ -1,0 +1,284 @@
+#@ load("@ytt:data","data")
+#@ load("@ytt:json", "json")
+#@ load("@ytt:base64", "base64")
+
+#@ for ns in data.values.namespaces:
+#@ if ns.exists == False:
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: #@ ns.name
+#@ end
+#@ if ns.createPipeline == True:
+#@ if hasattr(ns, "gitops"):
+#@ if hasattr(ns.gitops, "enabled"):
+#@ if ns.gitops.enabled == True:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-ssh-secret
+  namespace: #@ ns.name
+data:
+  id_rsa: #@ ns.gitops.base64_encoded_ssh_key
+  known_hosts: #@ ns.gitops.base64_encoded_known_hosts
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-cli
+  namespace: #@ ns.name
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.21.0"
+    tekton.dev/categories: Git
+    tekton.dev/tags: git
+    tekton.dev/displayName: "git cli"
+    tekton.dev/platforms: "linux/amd64,linux/s390x,linux/ppc64le"
+spec:
+  description: >-
+    This task can be used to perform git operations.
+    Git command that needs to be run can be passed as a script to
+    the task. This task needs authentication to git in order to push
+    after the git operation.
+  workspaces:
+    - name: source
+      description: A workspace that contains the fetched git repository.
+    - name: input
+      description: A workspace that contains file that needs to be added to git.
+    - name: ssh-directory
+      optional: true
+      description: |
+        A .ssh directory with private key, known_hosts, config, etc. Copied to
+        the user's home before git commands are executed. Used to authenticate
+        with the git remote when performing the clone. Binding a Secret to this
+        Workspace is strongly recommended over other volume types.
+    - name: basic-auth
+      optional: true
+      description: |
+        A Workspace containing a .gitconfig and .git-credentials file. These
+        will be copied to the user's home before any git commands are run. Any
+        other files in this Workspace are ignored. It is strongly recommended
+        to use ssh-directory over basic-auth whenever possible and to bind a
+        Secret to this Workspace over other volume types.
+  params:
+    - name: BASE_IMAGE
+      description: |
+        The base image for the task.
+      type: string
+      default: ghcr.io/vrabbi/alpine/git:v2.26.2
+    - name: GIT_USER_NAME
+      type: string
+      description: |
+        Git user name for performing git operation.
+      default: ""
+    - name: GIT_USER_EMAIL
+      type: string
+      description: |
+        Git user email for performing git operation.
+      default: ""
+    - name: GIT_SCRIPT
+      description: The git script to run.
+      type: string
+      default: |
+        git help
+    - name: USER_HOME
+      description: |
+        Absolute path to the user's home directory. Set this explicitly if you are running the image as a non-root user or have overridden
+        the gitInitImage param with an image containing custom user configuration.
+      type: string
+      default: "/tekton/home"
+    - name: VERBOSE
+      description: Log the commands that are executed during `git-clone`'s operation.
+      type: string
+      default: "true"
+  results:
+    - name: commit
+      description: The precise commit SHA after the git operation.
+  steps:
+    - name: git
+      image: $(params.BASE_IMAGE)
+      workingDir: $(workspaces.source.path)
+      env:
+      - name: PARAM_VERBOSE
+        value: $(params.VERBOSE)
+      - name: PARAM_USER_HOME
+        value: $(params.USER_HOME)
+      - name: WORKSPACE_OUTPUT_PATH
+        value: $(workspaces.output.path)
+      - name: WORKSPACE_SSH_DIRECTORY_BOUND
+        value: $(workspaces.ssh-directory.bound)
+      - name: WORKSPACE_SSH_DIRECTORY_PATH
+        value: $(workspaces.ssh-directory.path)
+      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND
+        value: $(workspaces.basic-auth.bound)
+      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH
+        value: $(workspaces.basic-auth.path)
+      script: |
+        #!/usr/bin/env sh
+        set -eu
+        if [ "${PARAM_VERBOSE}" = "true" ] ; then
+          set -x
+        fi
+        if [ "${WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND}" = "true" ] ; then
+          cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "${PARAM_USER_HOME}/.git-credentials"
+          cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig" "${PARAM_USER_HOME}/.gitconfig"
+          chmod 400 "${PARAM_USER_HOME}/.git-credentials"
+          chmod 400 "${PARAM_USER_HOME}/.gitconfig"
+        fi
+        if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
+          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" "${PARAM_USER_HOME}"/.ssh
+          chmod 700 "${PARAM_USER_HOME}"/.ssh
+          chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
+        fi
+        git config --global user.email "$(params.GIT_USER_EMAIL)"
+        git config --global user.name "$(params.GIT_USER_NAME)"
+        $(params.GIT_SCRIPT)
+        RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
+        EXIT_CODE="$?"
+        if [ "$EXIT_CODE" != 0 ]
+        then
+          exit $EXIT_CODE
+        fi
+        echo -n "$RESULT_SHA" > $(results.commit.path)
+#@ end
+#@ end
+#@ end
+#@ if hasattr(ns, "language"):
+#@ if ns.language == "go":
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: go-test
+  namespace: #@ ns.name
+  labels:
+    apps.tanzu.vmware.com/task: test
+spec:
+  params:
+    - name: blob-url
+    - name: blob-revision
+  steps:
+    - name: test
+      image: ghcr.io/vrabbi/golang:latest
+      command:
+        - bash
+        - -cxe
+        - |-
+          set -o pipefail
+          echo $(params.blob-revision)
+          cd `mktemp -d`
+          curl -SL $(params.blob-url) | tar xvzf -
+          go test -v ./...
+#@ elif ns.language == "java":
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: java-test
+  namespace: #@ ns.name
+  labels:
+    apps.tanzu.vmware.com/task: test
+spec:
+  params:
+    - name: blob-url
+    - name: blob-revision
+  steps:
+    - name: test
+      image: ghcr.io/vrabbi/gradle:latest
+      command:
+        - bash
+        - -cxe
+        - |-
+          set -o pipefail
+          echo $(params.blob-revision)
+          cd `mktemp -d`
+          wget -qO- $(params.blob-url) | tar xvz
+          chmod +x ./mvnw
+          ./mvnw test
+#@ end
+#@ end
+#@ end
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: registry-credentials
+  namespace: #@ ns.name
+type: kubernetes.io/dockerconfigjson
+stringData:
+  #@ auth_string = data.values.registry.username + ":" + data.values.registry.password
+  #@ registry_creds = {"username": data.values.registry.username, "password": data.values.registry.password, "auth": base64.encode(auth_string)}
+  .dockerconfigjson: #@ json.encode({"auths": {data.values.registry.server: registry_creds}})
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: default-sa-token
+  namespace: #@ ns.name
+  annotations:
+    kubernetes.io/service-account.name: default
+type: kubernetes.io/service-account-token
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: default
+  namespace: #@ ns.name
+  annotations:
+    kapp.k14s.io/create-strategy: fallback-on-update
+secrets:
+  - name: registry-credentials
+  - name: default-sa-token
+imagePullSecrets:
+  - name: registry-credentials
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: default
+  namespace: #@ ns.name
+rules:
+- apiGroups: [source.toolkit.fluxcd.io]
+  resources: [gitrepositories]
+  verbs: ['*']
+- apiGroups: [carto.run]
+  resources: [deliverables, runnables]
+  verbs: ['*']
+- apiGroups: [kpack.io]
+  resources: [images]
+  verbs: ['*']
+- apiGroups: [""]
+  resources: ['configmaps']
+  verbs: ['*']
+- apiGroups: [""]
+  resources: ['pods']
+  verbs: ['list']
+- apiGroups: [tekton.dev]
+  resources: [taskruns, pipelineruns]
+  verbs: ['*']
+- apiGroups: [tekton.dev]
+  resources: [pipelines]
+  verbs: ['list']
+- apiGroups: [kappctrl.k14s.io]
+  resources: [apps]
+  verbs: ['*']
+- apiGroups: [serving.knative.dev]
+  resources: ['services']
+  verbs: ['*']
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: default
+  namespace: #@ ns.name
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: default
+subjects:
+  - kind: ServiceAccount
+    name: default
+#@ end

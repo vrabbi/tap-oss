@@ -1,0 +1,37 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: cert-manager.tap.oss.1.6.1
+spec:
+  capacityRequirementsDescription: Varies significantly based on number of Certificate objects
+  licenses:
+  - Apache 2.0
+  refName: cert-manager.tap.oss
+  releaseNotes: cert-manager 1.6.1 https://github.com/jetstack/cert-manager/releases/tag/v1.6.1
+  releasedAt: "2021-10-29T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: projects.registry.vmware.com/tce/cert-manager@sha256:ca4c551c1e9c5bc0e2b554f20651c9538c97a1159ccf9c9b640457e18cdec039
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      examples:
+      - namespace: cert-manager
+      properties:
+        namespace:
+          default: cert-manager
+          description: The namespace in which to deploy cert-manager.
+          type: string
+      title: cert-manager.tap.oss.1.6.1 values schema
+  version: 1.6.1

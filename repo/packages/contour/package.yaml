@@ -1,0 +1,151 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: contour.tap.oss.1.19.1
+spec:
+  capacityRequirementsDescription: Varies significantly based on number of Services,
+    Ingresses/HTTPProxies, etc. A starting point is 128MB RAM and 0.5 CPU for each
+    Contour and Envoy pod, but this can and should be tuned based on observed usage.
+  licenses:
+  - Apache 2.0
+  refName: contour.tap.oss
+  releaseNotes: contour 1.19.1 https://github.com/projectcontour/contour/releases/tag/v1.19.1
+  releasedAt: "2021-10-26T00:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: projects.registry.vmware.com/tce/contour@sha256:be540433d503c870a589570f541eb40482271f3e27ac3563c33d42c1bd3b0647
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      properties:
+        certificates:
+          description: Settings for the TLS certificates for securing communication
+            between Contour and Envoy.
+          properties:
+            duration:
+              default: 8760h
+              description: If using cert-manager, how long the certificates should
+                be valid for. If useCertManager is false, this field is ignored.
+              type: string
+            renewBefore:
+              default: 360h
+              description: If using cert-manager, how long before expiration the certificates
+                should be renewed. If useCertManager is false, this field is ignored.
+              type: string
+            useCertManager:
+              default: false
+              description: Whether to use cert-manager to provision TLS certificates
+                for securing communication between Contour and Envoy. If false, the
+                upstream Contour certgen job will be used to provision certificates.
+                If true, the cert-manager addon must be installed in the cluster.
+              type: boolean
+          type: object
+        contour:
+          description: Settings for the Contour component.
+          properties:
+            configFileContents:
+              additionalProperties: true
+              description: The YAML contents of the Contour config file. See https://projectcontour.io/docs/v1.19.1/configuration/#configuration-file
+                for more information.
+              type: object
+            logLevel:
+              default: info
+              description: The Contour log level. Valid options are info and debug.
+              type: string
+            replicas:
+              default: 2
+              description: How many Contour pod replicas to have.
+              type: integer
+            useProxyProtocol:
+              default: false
+              description: Whether to enable PROXY protocol for all Envoy listeners.
+              type: boolean
+          type: object
+        envoy:
+          description: Settings for the Envoy component.
+          properties:
+            hostNetwork:
+              default: false
+              description: Whether to enable host networking for the Envoy pods.
+              type: boolean
+            hostPorts:
+              description: Host port settings for the Envoy pods.
+              properties:
+                enable:
+                  default: false
+                  description: Whether to enable host ports. If false, http and https
+                    are ignored.
+                  type: boolean
+                http:
+                  default: 80
+                  description: If enable == true, the host port number to expose Envoy's
+                    HTTP listener on.
+                  type: integer
+                https:
+                  default: 443
+                  description: If enable == true, the host port number to expose Envoy's
+                    HTTPS listener on.
+                  type: integer
+              type: object
+            logLevel:
+              default: info
+              description: The Envoy log level.
+              type: string
+            service:
+              description: Envoy service settings.
+              properties:
+                annotations:
+                  additionalProperties:
+                    type: string
+                  description: Annotations to set on the Envoy service.
+                  type: object
+                externalTrafficPolicy:
+                  default: Local
+                  description: The external traffic policy for the Envoy service.
+                  type: string
+                loadBalancerIP:
+                  description: The desired load balancer IP for the Envoy service.
+                  type: string
+                nodePorts:
+                  description: NodePort settings for the Envoy service. If type is
+                    not NodePort, these settings are ignored.
+                  properties:
+                    http:
+                      description: If type == NodePort, the node port number to expose
+                        Envoy's HTTP listener on. If not specified, a node port will
+                        be auto-assigned by Kubernetes.
+                      type: integer
+                    https:
+                      description: If type == NodePort, the node port number to expose
+                        Envoy's HTTPS listener on. If not specified, a node port will
+                        be auto-assigned by Kubernetes.
+                      type: integer
+                  type: object
+                type:
+                  default: LoadBalancer
+                  description: The type of Kubernetes service to provision for Envoy.
+                  type: string
+              type: object
+            terminationGracePeriodSeconds:
+              default: 300
+              description: The termination grace period, in seconds, for the Envoy
+                pods.
+              type: integer
+          type: object
+        namespace:
+          default: projectcontour
+          description: The namespace in which to deploy Contour and Envoy.
+          type: string
+      title: contour.tap.oss.1.19.1 values schema
+  version: 1.19.1

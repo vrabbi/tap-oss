@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: tekton.tap.oss
+spec:
+  categories:
+  - cicd
+  - tap-oss
+  displayName: tekton
+  iconSVGBase64: 
+  longDescription: Provides a Cloud Native CICD system using Tekton
+  maintainers:
+  - name: Scott Rosenberg
+  providerName: TeraSky
+  shortDescription: Tekton CICD tool
+  supportDescription: 'Go to https://tekton.dev/ for documentation'

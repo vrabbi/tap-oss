@@ -1,0 +1,29 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: kpack-config
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-group: kpack-config
+    kapp.k14s.io/change-rule.kpack: "upsert after upserting kpack"
+    kapp.k14s.io/change-rule.serviceaccount: "delete before deleting serviceaccount"
+spec:
+  serviceAccountName: tap-oss-install-sa
+  packageRef:
+    refName: kpack-config.tap.oss
+    versionSelection:
+      constraints: 0.5.0
+      prereleases: {}
+  values:
+  - secretRef:
+      name: kpack-config-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kpack-config-values
+  namespace: tap-oss
+stringData:
+  values.yaml: #@ yaml.encode(data.values.kpack_config)

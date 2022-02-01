@@ -1,0 +1,16 @@
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  annotations:
+    kapp.k14s.io/change-group: contour
+    kapp.k14s.io/change-rule.cert-manager: upsert after upserting cert-manager
+    kapp.k14s.io/change-rule.serviceaccount: delete before deleting serviceaccount
+  name: contour
+  namespace: tap-oss
+spec:
+  packageRef:
+    refName: contour.tap.oss
+    versionSelection:
+      constraints: 1.19.1
+      prereleases: {}
+  serviceAccountName: tap-oss-install-sa

@@ -1,0 +1,63 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: dev-ns-preperation.tap.oss.0.1.0
+spec:
+  refName: dev-ns-preperation.tap.oss
+  releaseNotes: Developer namespace preperation for TAP workloads v0.1.0
+  releasedAt: "2022-01-31T12:00:00Z"
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/dev-ns-preperation-package:0.1.0
+      template:
+      - ytt:
+          paths:
+          - config/
+  valuesSchema:
+    openAPIv3:
+      properties:
+        registry:
+          type: object
+          additionalProperties: false
+          properties:
+            username:
+              type: string
+              default: harbor.tap.oss
+              description: Registry of the repo images will be pushed to
+            password:
+              type: string
+              default: admin
+              description: Username for repo images will be pushed to
+            server:
+              type: string
+              default: Harbor12345
+              description: Password for repo images will be pushed to
+        namespaces:
+          type: array
+          default: []
+          items:
+            type: object
+            additionalProperties: false
+            description: Namespace name
+            properties:
+              name:
+                type: string
+                default: default
+              exists:
+                type: boolean
+                default: true
+                description: If false, we will create the namespace and manage its lifecycle, if true, the namespace must already exist
+              createPipeline:
+                type: boolean
+                default: true
+                description: If true, will create an example Tekton pipeline for the chosen language
+              language:
+                type: string
+                default: go
+                description: Supported languages are go and java
+      title:  dev-ns-preperation.tap.oss 0.1.0 values schema
+  version: 0.1.0

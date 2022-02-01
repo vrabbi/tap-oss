@@ -1,0 +1,25 @@
+#@data/values-schema
+---
+registry:
+  #@schema/desc 'Username for repo images will be pushed to'
+  username: "admin"
+  #@schema/desc 'Password for repo images will be pushed to'
+  password: "Harbor12345"
+  #@schema/desc 'FQDN of the repo images will be pushed to'
+  server: "harbor.tap.oss"
+namespaces:
+  #@schema/desc 'Namespace name'
+- name: "default"
+  #@schema/desc 'If false, we will create the namespace and manage its lifecycle, if true, the namespace must already exist'
+  exists: true
+  #@schema/desc 'If true, will create an example Tekton pipeline for the chosen language'
+  createPipeline: true
+  #@schema/desc 'Supported languages are go and java'
+  language: go
+  gitops:
+    #@schema/desc 'Support GitOps Supply Chain for this Namespace'
+    enabled: true
+    #@schema/desc 'SSH Key for git auth'
+    base64_encoded_ssh_key: ""
+    #@schema/desc 'Known hosts for git ssh connection. if empty skips host verification'
+    base64_encoded_known_hosts: ""

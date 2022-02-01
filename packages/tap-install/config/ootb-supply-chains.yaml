@@ -1,0 +1,28 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: ootb-supply-chains
+  namespace: tap-oss
+  annotations:
+    kapp.k14s.io/change-rule.serviceaccount: "delete before deleting serviceaccount"
+    kapp.k14s.io/change-rule.cartographer: "upsert after upserting cartographer"
+spec:
+  serviceAccountName: tap-oss-install-sa
+  packageRef:
+    refName: ootb-supply-chains.tap.oss
+    versionSelection:
+      constraints: 0.1.0
+  values:
+  - secretRef:
+      name: ootb-supply-chains-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: ootb-supply-chains-values
+  namespace: tap-oss
+stringData:
+  values.yaml: #@ yaml.encode(data.values.ootb_supply_chains)

@@ -1,0 +1,11 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: fluxcd/source-controller:v0.21.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: v0.21.1
+          url: fluxcd/source-controller:v0.21.1
+  image: index.docker.io/fluxcd/source-controller@sha256:62dbdfea90baa0a08a3d3aeb11f792efd30a19a4c928cf796b0e83cddfbc2ffb
+kind: ImagesLock

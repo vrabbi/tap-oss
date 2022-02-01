@@ -1,0 +1,34 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: gcr.io/distroless/base@sha256:cfdc553400d41b47fd231b028403469811fcdbc0e69d66ea8030c5a0b5fbac2b
+  image: gcr.io/distroless/base@sha256:cfdc553400d41b47fd231b028403469811fcdbc0e69d66ea8030c5a0b5fbac2b
+- annotations:
+    kbld.carvel.dev/id: gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+  image: gcr.io/google.com/cloudsdktool/cloud-sdk@sha256:27b2c22bf259d9bc1a291e99c63791ba0c27a04d2db0a43241ba0f1f20f4067f
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller:v0.32.1@sha256:077cdb806e2e4f2d787066fa426e3f5c57371b5552f777e323b56c68c00f9af0
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/controller@sha256:077cdb806e2e4f2d787066fa426e3f5c57371b5552f777e323b56c68c00f9af0
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint:v0.32.1@sha256:adf4bebbb80953561764a3fd65a83dc060387aadbde02e175aecf5e857b4fde7
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/entrypoint@sha256:adf4bebbb80953561764a3fd65a83dc060387aadbde02e175aecf5e857b4fde7
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init:v0.32.1@sha256:02ffc8b09e575d1ee8cfcc5a82263cea56f3f5fe04ea1082bb06d98b5b83d5e4
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/git-init@sha256:02ffc8b09e575d1ee8cfcc5a82263cea56f3f5fe04ea1082bb06d98b5b83d5e4
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter:v0.32.1@sha256:3c4918e581ba5b67db9838ee384012e419eda8fdcd716447d588c33c7073d07b
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/imagedigestexporter@sha256:3c4918e581ba5b67db9838ee384012e419eda8fdcd716447d588c33c7073d07b
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter:v0.32.1@sha256:fc663b53693f55592e9639f1b65132cce002f1b50329389524740c32cc314bc3
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/kubeconfigwriter@sha256:fc663b53693f55592e9639f1b65132cce002f1b50329389524740c32cc314bc3
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop:v0.32.1@sha256:ca21b9d74c05eb94a4059468e0eb794f3b6b8c4f0cf6b1cb6916251adda47ec2
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/nop@sha256:ca21b9d74c05eb94a4059468e0eb794f3b6b8c4f0cf6b1cb6916251adda47ec2
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init:v0.32.1@sha256:62c11e60e8d4653a4eab9118e6f761fa7efe3a69e829f8c68d6ebbeb16aaf336
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/pullrequest-init@sha256:62c11e60e8d4653a4eab9118e6f761fa7efe3a69e829f8c68d6ebbeb16aaf336
+- annotations:
+    kbld.carvel.dev/id: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook:v0.32.1@sha256:3e9beebdc80184231a9e147b20b9e8f15e7445af9b0e05dc6f05ce396c1f8500
+  image: gcr.io/tekton-releases/github.com/tektoncd/pipeline/cmd/webhook@sha256:3e9beebdc80184231a9e147b20b9e8f15e7445af9b0e05dc6f05ce396c1f8500
+kind: ImagesLock

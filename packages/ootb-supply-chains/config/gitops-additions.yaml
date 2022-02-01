@@ -1,0 +1,325 @@
+#@ load("@ytt:data", "data")
+#@ if hasattr(data.values, "gitops"):
+#@ if hasattr(data.values.gitops, "configure"):
+#@ if data.values.gitops.configure == True:
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: git-ssh-secret
+data:
+  id_rsa: #@ data.values.gitops.git_writer.base64_encoded_ssh_key
+  known_hosts: #@ data.values.gitops.git_writer.base64_encoded_known_hosts
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: git-cli
+  labels:
+    app.kubernetes.io/version: "0.2"
+  annotations:
+    tekton.dev/pipelines.minVersion: "0.21.0"
+    tekton.dev/categories: Git
+    tekton.dev/tags: git
+    tekton.dev/displayName: "git cli"
+    tekton.dev/platforms: "linux/amd64,linux/s390x,linux/ppc64le"
+spec:
+  description: >-
+    This task can be used to perform git operations.
+    Git command that needs to be run can be passed as a script to
+    the task. This task needs authentication to git in order to push
+    after the git operation.
+  workspaces:
+    - name: source
+      description: A workspace that contains the fetched git repository.
+    - name: input
+      description: A workspace that contains file that needs to be added to git.
+    - name: ssh-directory
+      optional: true
+      description: |
+        A .ssh directory with private key, known_hosts, config, etc. Copied to
+        the user's home before git commands are executed. Used to authenticate
+        with the git remote when performing the clone. Binding a Secret to this
+        Workspace is strongly recommended over other volume types.
+    - name: basic-auth
+      optional: true
+      description: |
+        A Workspace containing a .gitconfig and .git-credentials file. These
+        will be copied to the user's home before any git commands are run. Any
+        other files in this Workspace are ignored. It is strongly recommended
+        to use ssh-directory over basic-auth whenever possible and to bind a
+        Secret to this Workspace over other volume types.
+  params:
+    - name: BASE_IMAGE
+      description: |
+        The base image for the task.
+      type: string
+      default: ghcr.io/vrabbi/alpine/git:v2.26.2
+    - name: GIT_USER_NAME
+      type: string
+      description: |
+        Git user name for performing git operation.
+      default: ""
+    - name: GIT_USER_EMAIL
+      type: string
+      description: |
+        Git user email for performing git operation.
+      default: ""
+    - name: GIT_SCRIPT
+      description: The git script to run.
+      type: string
+      default: |
+        git help
+    - name: USER_HOME
+      description: |
+        Absolute path to the user's home directory. Set this explicitly if you are running the image as a non-root user or have overridden
+        the gitInitImage param with an image containing custom user configuration.
+      type: string
+      default: "/tekton/home"
+    - name: VERBOSE
+      description: Log the commands that are executed during `git-clone`'s operation.
+      type: string
+      default: "true"
+  results:
+    - name: commit
+      description: The precise commit SHA after the git operation.
+  steps:
+    - name: git
+      image: $(params.BASE_IMAGE)
+      workingDir: $(workspaces.source.path)
+      env:
+      - name: PARAM_VERBOSE
+        value: $(params.VERBOSE)
+      - name: PARAM_USER_HOME
+        value: $(params.USER_HOME)
+      - name: WORKSPACE_OUTPUT_PATH
+        value: $(workspaces.output.path)
+      - name: WORKSPACE_SSH_DIRECTORY_BOUND
+        value: $(workspaces.ssh-directory.bound)
+      - name: WORKSPACE_SSH_DIRECTORY_PATH
+        value: $(workspaces.ssh-directory.path)
+      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND
+        value: $(workspaces.basic-auth.bound)
+      - name: WORKSPACE_BASIC_AUTH_DIRECTORY_PATH
+        value: $(workspaces.basic-auth.path)
+      script: |
+        #!/usr/bin/env sh
+        set -eu
+        if [ "${PARAM_VERBOSE}" = "true" ] ; then
+          set -x
+        fi
+        if [ "${WORKSPACE_BASIC_AUTH_DIRECTORY_BOUND}" = "true" ] ; then
+          cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.git-credentials" "${PARAM_USER_HOME}/.git-credentials"
+          cp "${WORKSPACE_BASIC_AUTH_DIRECTORY_PATH}/.gitconfig" "${PARAM_USER_HOME}/.gitconfig"
+          chmod 400 "${PARAM_USER_HOME}/.git-credentials"
+          chmod 400 "${PARAM_USER_HOME}/.gitconfig"
+        fi
+        if [ "${WORKSPACE_SSH_DIRECTORY_BOUND}" = "true" ] ; then
+          cp -R "${WORKSPACE_SSH_DIRECTORY_PATH}" "${PARAM_USER_HOME}"/.ssh
+          chmod 700 "${PARAM_USER_HOME}"/.ssh
+          chmod -R 400 "${PARAM_USER_HOME}"/.ssh/*
+        fi
+        # Setting up the config for the git.
+        git config --global user.email "$(params.GIT_USER_EMAIL)"
+        git config --global user.name "$(params.GIT_USER_NAME)"
+        $(params.GIT_SCRIPT)
+        RESULT_SHA="$(git rev-parse HEAD | tr -d '\n')"
+        EXIT_CODE="$?"
+        if [ "$EXIT_CODE" != 0 ]
+        then
+          exit $EXIT_CODE
+        fi
+        # Make sure we don't add a trailing newline to the result!
+        echo -n "$RESULT_SHA" > $(results.commit.path)
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: git-writer
+spec:
+  params:
+    - name: git_writer_username
+      default: #@ data.values.gitops.git_writer.username
+    - name: git_writer_user_email
+      default: #@ data.values.gitops.git_writer.user_email
+    - name: git_writer_commit_message
+      default: #@ data.values.gitops.git_writer.message
+    - name: git_writer_ssh_user
+      default: #@ data.values.gitops.git_writer.ssh_user
+    - name: git_writer_server
+      default: #@ data.values.gitops.git_writer.server
+    - name: git_writer_port
+      default: #@ data.values.gitops.git_writer.port
+    - name: git_writer_repository
+      default: #@ data.values.gitops.git_writer.repository
+    - name: git_writer_branch
+      default: #@ data.values.gitops.git_writer.branch
+    - name: git_writer_skip_host_checking
+      default: true
+    - name: git_writer_ssh_variant
+      default: ssh
+  template:
+    apiVersion: carto.run/v1alpha1
+    kind: Runnable
+    metadata:
+      name: $(workload.metadata.name)$-git-writer
+    spec:
+      runTemplateRef:
+        name: git-writer
+      inputs:
+        input_config_map_name: $(workload.metadata.name)$
+        input_config_map_field: manifest.yaml
+        git_username: $(params.git_writer_username)$
+        git_user_email: $(params.git_writer_user_email)$
+        commit_message: $(params.git_writer_commit_message)$
+        git_ssh_user: $(params.git_writer_ssh_user)$
+        git_server: $(params.git_writer_server)$
+        git_server_port: $(params.git_writer_port)$
+        git_repository: $(params.git_writer_repository)$
+        branch: $(params.git_writer_branch)$
+        skip_host_checking: $(params.git_writer_skip_host_checking)$
+        git_ssh_variant: $(params.git_writer_ssh_variant)$
+        data: $(config)$
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterRunTemplate
+metadata:
+  name: git-writer
+spec:
+  template:
+    apiVersion: tekton.dev/v1beta1
+    kind: TaskRun
+    metadata:
+      generateName: $(runnable.metadata.name)$-
+    spec:
+      taskRef:
+        name: git-cli
+      workspaces:
+        - name: source
+          emptyDir: { }
+        - name: input
+          emptyDir: { }
+        - name: ssh-directory
+          secret:
+            secretName: git-ssh-secret
+      params:
+        - name: GIT_USER_NAME
+          value: $(runnable.spec.inputs.git_username)$
+        - name: GIT_USER_EMAIL
+          value: $(runnable.spec.inputs.git_user_email)$
+        - name: USER_HOME
+          value: /root
+        - name: GIT_SCRIPT
+          value: |
+            export COMMIT_MESSAGE="$(runnable.spec.inputs.commit_message)$"
+            export BRANCH="$(runnable.spec.inputs.branch)$"
+            if [[ -n "$(runnable.spec.inputs.skip_host_checking)$" && "$(runnable.spec.inputs.skip_host_checking)$" = true ]]
+            then
+              export GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+            fi
+            if [[ -n "$(runnable.spec.inputs.git_ssh_variant)$" ]]
+            then
+              export GIT_SSH_VARIANT="$(runnable.spec.inputs.git_ssh_variant)$"
+            fi
+            git init
+            if [[ -n "$(runnable.spec.inputs.git_server_port)$" ]]; then
+              git remote add origin $(runnable.spec.inputs.git_ssh_user)$@$(runnable.spec.inputs.git_server)$:$(runnable.spec.inputs.git_server_port)$/$(runnable.spec.inputs.git_repository)$
+            else
+              git remote add origin $(runnable.spec.inputs.git_ssh_user)$@$(runnable.spec.inputs.git_server)$:$(runnable.spec.inputs.git_repository)$
+            fi
+            # TODO remove the fetch and branch
+            git fetch
+            git branch
+            git pull origin "`git remote show origin | grep "HEAD branch" | sed 's/.*: //'`"
+            git pull origin "$BRANCH" || git branch "$BRANCH"
+            git checkout "$BRANCH"
+            export CONFIG_MAP_FIELD=$(runnable.spec.inputs.input_config_map_field)$
+            export WORKLOAD_NAME=$(runnable.spec.inputs.input_config_map_name)$
+            export DATA="$(runnable.spec.inputs.data)$"
+            mkdir $WORKLOAD_NAME
+            echo "$DATA" | tee "$WORKLOAD_NAME/$CONFIG_MAP_FIELD"
+            git add .
+            git commit --allow-empty -m "[$WORKLOAD_NAME] - $COMMIT_MESSAGE"
+            git push --set-upstream origin "$BRANCH"
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterConfigTemplate
+metadata:
+  name: gitops-app-config
+spec:
+  configPath: .data.manifest
+  ytt: |
+    #@ load("@ytt:data", "data")
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: #@ data.values.workload.metadata.name
+    data:
+      #@yaml/text-templated-strings
+      manifest: |
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        metadata:
+          name: (@= data.values.workload.metadata.name @)
+          labels:
+            (@- if hasattr(data.values.workload.metadata, "labels"): @)
+            (@- if hasattr(data.values.workload.metadata.labels, "app.kubernetes.io/part-of"): @)
+            app.kubernetes.io/part-of: (@= data.values.workload.metadata.labels["app.kubernetes.io/part-of"] @)
+            (@ end -@)
+            (@ end -@)
+            carto.run/workload-name: (@= data.values.workload.metadata.name @)
+            app.kubernetes.io/component: run
+        spec:
+          template:
+            metadata:
+              annotations:
+                autoscaling.knative.dev/minScale: '1'
+            spec:
+              containers:
+                - name: workload
+                  image: (@= data.values.image @)
+                  securityContext:
+                    runAsUser: 1000
+              imagePullSecrets:
+                - name: registry-credentials
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterSupplyChain
+metadata:
+  name: ootb-gitops-supply-chain
+spec:
+  selector:
+    app.tanzu.vmware.com/workload-type: web
+    app.tanzu.vmware.com/gitops: "true"
+  resources:
+    - name: source-provider
+      templateRef:
+        kind: ClusterSourceTemplate
+        name: source
+    - name: image-builder
+      templateRef:
+        kind: ClusterImageTemplate
+        name: image
+      params:
+        - name: image_prefix
+          value: #@ data.values.image_prefix
+      sources:
+        - resource: source-provider
+          name: source
+    - name: config-provider
+      templateRef:
+        kind: ClusterConfigTemplate
+        name: gitops-app-config
+      images:
+        - resource: image-builder
+          name: image
+    - name: git-writer
+      templateRef:
+        kind: ClusterTemplate
+        name: git-writer
+      configs:
+        - resource: config-provider
+          name: data
+#@ end
+#@ end
+#@ end
