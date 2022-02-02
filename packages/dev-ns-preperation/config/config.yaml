@@ -260,7 +260,7 @@ rules:
   resources: [taskruns, pipelineruns]
   verbs: ['*']
 - apiGroups: [tekton.dev]
-  resources: [pipelines]
+  resources: [pipelines, tasks]
   verbs: ['list']
 - apiGroups: [kappctrl.k14s.io]
   resources: [apps]

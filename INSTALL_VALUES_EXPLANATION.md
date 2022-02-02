@@ -25,10 +25,9 @@ The configuration options are the same as the TCE Package.
 The required values are:  
 ```
 knative:
-  ingress:
-    domain:
-      name: # Domain suffix for all ingress objects created in the system and deployed via Knative. if type is not real leave this field empty
-      type: real # can be real, nip.io or sslip.io
+  domain:
+    name: # Domain suffix for all ingress objects created in the system and deployed via Knative. if type is not real leave this field empty
+    type: real # can be real, nip.io or sslip.io
 ```  
 
 ## DEV NAMESPACE PREPERATION

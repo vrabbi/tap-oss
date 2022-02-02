@@ -24,12 +24,11 @@ kpack_config:
 
 #@schema/desc "knative serving configuration"
 knative:
-  ingress:
-    domain:
-      #@schema/desc "Your own domain name if type is real or empty if type is sslip.io or nip.io."
-      name: "tap.oss"
-      #@schema/desc "The type of DNS service. Allowable values are real, sslip.io"
-      type: real
+  domain:
+    #@schema/desc "Your own domain name if type is real or empty if type is sslip.io or nip.io."
+    name: "tap.oss"
+    #@schema/desc "The type of DNS service. Allowable values are real, sslip.io"
+    type: real
 #@schema/desc "Settings for auto configuring RBAC and configuration for Dev Namespaces"
 dev_ns_preperation:
   registry:

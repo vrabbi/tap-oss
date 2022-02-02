@@ -14,7 +14,7 @@ images:
       - resolved:
           tag: 0.1.0
           url: ghcr.io/vrabbi/dev-ns-preperation-package:0.1.0
-  image: ghcr.io/vrabbi/dev-ns-preperation-package@sha256:a97429d9d9ce3f7045d602d9b22930251af333b7c004e62e7bd9ff7ed1db7beb
+  image: ghcr.io/vrabbi/dev-ns-preperation-package@sha256:572a1968ce344e2b4792c61caabec6a41b0a0249d15ae57ac2702ebe10263fef
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
     kbld.carvel.dev/origins: |
@@ -35,14 +35,14 @@ images:
       - resolved:
           tag: 0.1.0
           url: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
-  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:81c3c8c9a7db7cde3005bb380c7b19c1f7902c2b0c452a05ac87f94685c6ca3a
+  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:543f1047f8f0009711b1d22ccfd623def805d047bedf347c3397bc458bb473d1
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.0
     kbld.carvel.dev/origins: |
       - resolved:
           tag: 0.1.0
           url: ghcr.io/vrabbi/tap-oss-package:0.1.0
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:a57b358ee4787f93280cbe3f45875d4c7e79c781c24a661ed256e0823f96472d
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:f8b6587ed4593bed535e4813d8c2083d42ecb97d196deba423e9ac5cc1ea289e
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

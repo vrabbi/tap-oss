@@ -41,10 +41,9 @@ kpack_config:
   builder:
     tag: <FILL ME IN>
 knative:
-  ingress:
-    domain:
-      name: <FILL ME IN>
-      type: real
+  domain:
+    name: <FILL ME IN>
+    type: real
 dev_ns_preperation:
   registry:
     username: <FILL ME IN>
@@ -90,7 +89,7 @@ EOF
 &nbsp;&nbsp;&nbsp;&nbsp;Check out the [INSTALL_VALUES_EXPLANATION.md](INSTALL_VALUES_EXPLANATION.md) file for more info on the configuration parameters
 5. Install the Platform  
 ```bash
-tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.1.0 -f tap-oss-values.yaml
+tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.1.1 -f tap-oss-values.yaml
 ```  
 5. Wait for all package installs to reconcile
 ```bash

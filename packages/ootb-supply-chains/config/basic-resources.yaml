@@ -76,7 +76,7 @@ spec:
           serviceAccountName: default
           containers:
             - name: workload
-              #@ if hasattr(data.values.workload.spec.build, "env"):
+              #@ if hasattr(data.values.workload.spec, "env"):
               env:
               #@ for var in data.values.workload.spec.env:
               - name: #@ var.name
