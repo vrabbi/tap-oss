@@ -1,0 +1,14 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: dotnet-core-demo-app
+  labels:
+    app.tanzu.vmware.com/workload-type: web
+    app.tanzu.vmware.com/gitops: "true"
+spec:
+  serviceAccountName: default
+  source:
+    git:
+      url: https://github.com/vrabbi/example-dotnet-app
+      ref:
+        branch: main

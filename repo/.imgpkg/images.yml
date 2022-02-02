@@ -42,7 +42,7 @@ images:
       - resolved:
           tag: 0.1.0
           url: ghcr.io/vrabbi/tap-oss-package:0.1.0
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:ac5d5c7a67fa847c576a1db7f44910a0e6012afce62a9a60ada66f6118a4d916
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:a57b358ee4787f93280cbe3f45875d4c7e79c781c24a661ed256e0823f96472d
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

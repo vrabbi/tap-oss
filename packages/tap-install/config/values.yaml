@@ -33,12 +33,12 @@ knative:
 #@schema/desc "Settings for auto configuring RBAC and configuration for Dev Namespaces"
 dev_ns_preperation:
   registry:
-    #@schema/desc 'Registry of the repo images will be pushed to'
-    username: "harbor.tap.oss"
     #@schema/desc 'Username for repo images will be pushed to'
-    password: "admin"
+    username: "admin"
     #@schema/desc 'Password for repo images will be pushed to'
-    server: "Harbor12345"
+    password: "Harbor12345"
+    #@schema/desc 'FQDN of the repo images will be pushed to'
+    server: "harbor.tap.oss"
   namespaces:
     #@schema/desc 'Namespace name'
   - name: "default"
@@ -48,6 +48,13 @@ dev_ns_preperation:
     createPipeline: true
     #@schema/desc 'Supported languages are go and java'
     language: go
+    gitops:
+      #@schema/desc 'Support GitOps Supply Chain for this Namespace'
+      enabled: true
+      #@schema/desc 'SSH Key for git auth'
+      base64_encoded_ssh_key: ""
+      #@schema/desc 'Known hosts for git ssh connection. if empty skips host verification'
+      base64_encoded_known_hosts: ""
 #@schema/desc "Settings for auto configuring OOTB Supply Chains"
 ootb_supply_chains:
   #@schema/desc "Image Prefix for workload images to be created with"

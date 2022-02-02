@@ -1,0 +1,13 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: java-web-app
+  labels:
+    app.tanzu.vmware.com/workload-type: web
+    app.tanzu.vmware.com/has-tests: "true"
+spec:
+  source:
+    git:
+      url: https://github.com/sample-accelerators/tanzu-java-web-app
+      ref:
+        branch: main
