@@ -1,0 +1,54 @@
+#@data/values
+---
+contour:
+  envoy:
+    service:
+      type: LoadBalancer
+kpack:
+  kp_default_repository: "harbor.tap.oss"
+  kp_default_repository_password: "Harbor12345"
+  kp_default_repository_username: "admin"
+
+kpack_config:
+  builder: 
+    tag: "harbor.tap.oss/library/builder"
+  registry:
+    username: "admin"
+    password: "Harbor12345"
+    server: "harbor.tap.oss"
+
+knative:
+  domain:
+    name: "tap.oss"
+    type: real
+dev_ns_preperation:
+  registry:
+    username: "admin"
+    password: "Harbor12345"
+    server: "harbor.tap.oss"
+  namespaces:
+  - name: "default"
+    exists: true
+    createPipeline: true
+    language: go
+    gitops:
+      enabled: true
+      base64_encoded_ssh_key: ""
+      base64_encoded_known_hosts: ""
+ootb_supply_chains:
+  image_prefix: ""
+  gitops:
+    configure: true
+    git_writer:
+      message: "TAP OSS Based Update of app configuration"
+      ssh_user: "git"
+      server: "github.com"
+      repository: ""
+      base64_encoded_ssh_key: ""
+      base64_encoded_known_hosts: ""
+      branch: "main"
+      username: ""
+      user_email: ""
+      port: ""
+  testing:
+    configure: true

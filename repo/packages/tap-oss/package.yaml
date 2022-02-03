@@ -1,7 +1,7 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: tap-install.tap.oss.0.1.0
+  name: tap-install.tap.oss.0.1.1
 spec:
   licenses:
   - Apache 2.0
@@ -14,7 +14,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/tap-oss-package:0.1.0
+          image: ghcr.io/vrabbi/tap-oss-package:0.1.1
       template:
       - ytt:
           paths:
@@ -26,6 +26,23 @@ spec:
   valuesSchema:
     openAPIv3:
       properties:
+        contour:
+          type: object
+          additionalProperties: false
+          description: TCE Contour package configuration
+          properties:
+            envoy:
+              type: object
+              additionalProperties: false
+              properties:
+                service:
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    type:
+                      type: string
+                      default: LoadBalancer
+                      description: Service type for Envoy. Set to ClusterIP in local clusters. Defaults to LoadBalancer
         kpack:
           type: object
           additionalProperties: false
@@ -208,4 +225,4 @@ spec:
                   default: true
                   description: Should Testing Supply chain be created and configured
       title: tap-install.tap.oss.0.1.0 values schema
-  version: 0.1.0
+  version: 0.1.1

@@ -1,5 +1,11 @@
 #@data/values-schema
 ---
+#@schema/desc "TCE Contour package configuration"
+contour:
+  envoy:
+    service:
+      #@schema/desc "Service type for Envoy - Set to ClusterIP for local clusters. defaults to LoadBalancer"
+      type: LoadBalancer
 #@schema/desc "TCE Kpack package configuration"
 kpack:
   #@schema/desc "Default repo for kpack resources and images"

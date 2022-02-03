@@ -37,12 +37,12 @@ images:
           url: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
   image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:543f1047f8f0009711b1d22ccfd623def805d047bedf347c3397bc458bb473d1
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.0
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.1
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.1.0
-          url: ghcr.io/vrabbi/tap-oss-package:0.1.0
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:f8b6587ed4593bed535e4813d8c2083d42ecb97d196deba423e9ac5cc1ea289e
+          tag: 0.1.1
+          url: ghcr.io/vrabbi/tap-oss-package:0.1.1
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:bf74b4a14681adfe1ed01b4d9230177f48a1c30ccbcddc091b9b519fc4f1fac4
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

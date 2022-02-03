@@ -1,3 +1,6 @@
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+---
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
@@ -14,3 +17,16 @@ spec:
       constraints: 1.19.1
       prereleases: {}
   serviceAccountName: tap-oss-install-sa
+  #@ if data.values.contour.envoy.service.type != "LoadBalancer":
+  values:
+  - secretRef:
+      name: contour-values
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: contour-values
+  namespace: tap-oss
+stringData:
+  values.yaml: #@ yaml.encode(data.values.contour)
+#@ end

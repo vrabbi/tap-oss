@@ -1,6 +1,6 @@
 # This file explains the general roadmap for this repo
 ## Add more configurability
-* Support clusters without Service Type Load Balancer (Local Clusters) via a simple configuration - WIP
+* Support clusters without Service Type Load Balancer (Local Clusters) via a simple configuration - DONE (version 0.1.2+)
 * Support exclusion of specific packages from installation - WIP
 * Enable more customization based on community feedback
 ## **More OOTB Supply Chains**

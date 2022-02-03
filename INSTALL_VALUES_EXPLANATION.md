@@ -1,8 +1,18 @@
 # Values Explanation
 Each package that requires values has a specific high level key with all configuration nested bellow it.  
 
+## CONTOUR
+The configuration exposed allows you to set the Envoy service type.  
+By default it will use a service of type LoadBalancer. for local clusters or clusters without a load balancer provider add the following:  
+```
+contour:
+  envoy:
+    service:
+      type: ClusterIP
+```  
+  
 ## KPACK
-The configuration options are the same as the TCE Package.  
+The configuration options are a subset of the TCE Package options.  
 The required values are:  
 ```
 kpack:
