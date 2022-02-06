@@ -1,0 +1,150 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: workload-k8s-deployment
+spec:
+  params:
+    - name: containerPort
+      default: 8080
+  template:
+    apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      name: $(workload.metadata.name)$
+      labels:
+        app.kubernetes.io/part-of: $(workload.metadata.name)$
+    spec:
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/part-of: $(workload.metadata.name)$
+        spec:
+          serviceAccountName: $(workload.spec.serviceAccountName)$
+          containers:
+            - name: workload
+              image: $(image)$
+              env: $(workload.spec.env)$
+              resources: $(workload.spec.resources)$
+              ports:
+                - name: http-port
+                  containerPort: $(params.containerPort)$
+      selector:
+        matchLabels:
+          app.kubernetes.io/part-of: $(workload.metadata.name)$
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: workload-k8s-service
+spec:
+  params:
+    - name: containerPort
+      default: 8080
+  template:
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: $(workload.metadata.name)$
+      labels:
+        app.kubernetes.io/part-of: $(workload.metadata.name)$
+    spec:
+      ports:
+        - name: http
+          port: 80
+          protocol: TCP
+          targetPort: $(params.containerPort)$
+      selector:
+        app.kubernetes.io/part-of: $(workload.metadata.name)$
+      type: ClusterIP
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: workload-k8s-ingress
+spec:
+  params:
+    - name: containerPort
+      default: 8080
+  template:
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: $(workload.metadata.name)$-ingress
+    spec:
+      rules:
+      - host: $(workload.metadata.name)$-$(workload.metadata.namespace)$.$(params.ingressDomain)$
+        http:
+          paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: $(workload.metadata.name)$
+                port:
+                  name: http
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterTemplate
+metadata:
+  name: workload-k8s-binding
+spec:
+  template:
+    apiVersion: servicebinding.io/v1alpha3
+    kind: ServiceBinding
+    metadata:
+      name: $(workload.metadata.name)$-db
+    spec:
+      service:
+        apiVersion: v1
+        kind: Secret
+        name: $(workload.metadata.name)$-db
+      workload:
+        apiVersion: apps/v1
+        kind: Deployment
+        name: $(workload.metadata.name)$
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterSupplyChain
+metadata:
+  name: ootb-svc-binding-native-k8s-deployment
+spec:
+  selector:
+    apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-db-binding: "true"
+    apps.tanzu.vmware.com/native-k8s-deployment: "true"
+  resources:
+    - name: source-provider
+      templateRef:
+        kind: ClusterSourceTemplate
+        name: source
+    - name: image-builder
+      templateRef:
+        kind: ClusterImageTemplate
+        name: image
+      params:
+        - name: image_prefix
+          value: #@ data.values.image_prefix
+      sources:
+        - resource: source-provider
+          name: source
+    - name: deployment-deployer
+      templateRef:
+        kind: ClusterTemplate
+        name: workload-k8s-deployment
+      images:
+        - resource: image-builder
+          name: new-image
+    - name: service-deployer
+      templateRef:
+        kind: ClusterTemplate
+        name: workload-k8s-service
+    - name: ingress-deployer
+      templateRef:
+        kind: ClusterTemplate
+        name: workload-k8s-ingress
+    - name: binding-deployer
+      templateRef:
+        kind: ClusterTemplate
+        name: workload-k8s-binding
