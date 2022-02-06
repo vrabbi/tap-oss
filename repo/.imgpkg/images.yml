@@ -23,12 +23,12 @@ images:
           url: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
   image: ghcr.io/vrabbi/flux-source-controller-package@sha256:e20ebc397001f4b274a92a821f15598fd960007d6b24bd5e8a7ddb1e2312927a
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.1
+    kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.2
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.5.1
-          url: ghcr.io/vrabbi/kpack-config-package:0.5.1
-  image: ghcr.io/vrabbi/kpack-config-package@sha256:b10fa04bcf4398dedf6bef3b5c7f84ea414af241d8d1bb0c2238dbae056fe150
+          tag: 0.5.2
+          url: ghcr.io/vrabbi/kpack-config-package:0.5.2
+  image: ghcr.io/vrabbi/kpack-config-package@sha256:d5e14db2df55a33590832876e6c9c662183e10c8c5136e7430a4bc369ecba95b
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.1
     kbld.carvel.dev/origins: |
@@ -42,7 +42,7 @@ images:
       - resolved:
           tag: 0.1.3
           url: ghcr.io/vrabbi/tap-oss-package:0.1.3
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:463d44ae50fb06b2d84c79c613852b9c7250dbe0c1998f5f4ff31144ee8cf5b2
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:27fada58dd517ce85a02dfa3f3783757c809bdcf2e8ffcf6dfe72362774a7f0e
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

@@ -1,7 +1,7 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: kpack-config.tap.oss.0.5.1
+  name: kpack-config.tap.oss.0.5.2
 spec:
   licenses:
   - Apache 2.0
@@ -14,7 +14,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/kpack-config-package:0.5.1
+          image: ghcr.io/vrabbi/kpack-config-package:0.5.2
       template:
       - ytt:
           paths:
@@ -47,4 +47,4 @@ spec:
               default: harbor.tap.oss
               description: Registry Server for storing the cluster builder artifacts
       title: kpack-config.tap.oss 0.5.0 values schema
-  version: 0.5.1
+  version: 0.5.2

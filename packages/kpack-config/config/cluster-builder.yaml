@@ -27,8 +27,6 @@ spec:
   - group:
     - id: paketo-buildpacks/nginx
   - group:
-    - id: paketo-buildpacks/spring-boot
-  - group:
     - id: paketo-buildpacks/dotnet-core
   - group:
     - id: paketo-buildpacks/procfile
