@@ -1,5 +1,12 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:yaml", "yaml")
+#@ install = True
+#@ for i in data.values.disabled_packages:
+#@   if i == "kpack.tap.oss":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 ---
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
@@ -27,3 +34,4 @@ metadata:
   namespace: tap-oss
 stringData:
   values.yaml: #@ yaml.encode(data.values.kpack)
+#@ end
