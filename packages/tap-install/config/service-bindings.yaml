@@ -1,3 +1,11 @@
+#@ load("@ytt:data", "data")
+#@ install = True
+#@ for i in data.values.disabled_packages:
+#@   if i == "service-bindings.tap.oss":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
@@ -13,3 +21,4 @@ spec:
     refName: service-bindings.tap.oss
     versionSelection:
       constraints: 0.6.0
+#@ end
