@@ -7,6 +7,7 @@
 * Testing Supply Chain using jenkins pipeline for testing
 * Testing Supply Chain using Argo Workflows for testing
 * GitOps Supply Chain with Poly Repo Configuration - WIP
+* Basic Supply chain using Kaniko instead of kpack to build images - DONE (version 0.1.5+)
 ## **Extend the core packages to include:**
 * [Backstage](https://backstage.io/) - WIP
 * [Backstage Software Templates integration (Similar to App Accelerator)](https://backstage.io/docs/features/software-templates/software-templates-index)

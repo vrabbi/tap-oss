@@ -19,6 +19,29 @@ spec:
   - secretRef:
       name: knative-serving-values
 ---
+#@ if data.values.knative.domain.type == "nip.io":
+apiVersion: v1
+kind: Secret
+metadata:
+  name: knative-serving-values
+  namespace: tap-oss
+stringData:
+  values.yaml: |
+    domain:
+      type: "nip.io"
+#@ end
+#@ if data.values.knative.domain.type == "sslip.io":
+apiVersion: v1
+kind: Secret
+metadata:
+  name: knative-serving-values
+  namespace: tap-oss
+stringData:
+  values.yaml: |
+    domain:
+      type: "sslip.io"
+#@ end
+#@ if data.values.knative.domain.type == "real":
 apiVersion: v1
 kind: Secret
 metadata:
@@ -26,3 +49,4 @@ metadata:
   namespace: tap-oss
 stringData:
   values.yaml: #@ yaml.encode(data.values.knative)
+#@ end

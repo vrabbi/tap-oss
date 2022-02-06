@@ -14,7 +14,7 @@ spec:
   packageRef:
     refName: kpack-config.tap.oss
     versionSelection:
-      constraints: 0.5.0
+      constraints: 0.5.1
       prereleases: {}
   values:
   - secretRef:

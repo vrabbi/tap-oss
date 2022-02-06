@@ -1,12 +1,12 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: ootb-supply-chains.tap.oss.0.1.0
+  name: ootb-supply-chains.tap.oss.0.1.1
 spec:
   licenses:
   - Apache 2.0
   refName: ootb-supply-chains.tap.oss
-  releaseNotes: ootb-supply-chains 0.1.0 for OSS TAP based on Cartographer examples
+  releaseNotes: ootb-supply-chains 0.1.1 for OSS TAP based on Cartographer examples
   releasedAt: "2022-01-31T12:00:00Z"
   template:
     spec:
@@ -14,7 +14,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
+          image: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.1
       template:
       - ytt:
           paths:
@@ -88,4 +88,4 @@ spec:
               default: true
               description: Should Testing Supply chain be created and configured
       title: ootb-supply-chains.tap.oss 0.1.0 values schema
-  version: 0.1.0
+  version: 0.1.1

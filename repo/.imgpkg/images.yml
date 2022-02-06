@@ -23,26 +23,26 @@ images:
           url: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
   image: ghcr.io/vrabbi/flux-source-controller-package@sha256:e20ebc397001f4b274a92a821f15598fd960007d6b24bd5e8a7ddb1e2312927a
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.0
+    kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.1
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.5.0
-          url: ghcr.io/vrabbi/kpack-config-package:0.5.0
-  image: ghcr.io/vrabbi/kpack-config-package@sha256:ded2c88cf95894c5fcf9411efcba926abc06c109b3c3eb9ee94910414f2c88c3
+          tag: 0.5.1
+          url: ghcr.io/vrabbi/kpack-config-package:0.5.1
+  image: ghcr.io/vrabbi/kpack-config-package@sha256:b10fa04bcf4398dedf6bef3b5c7f84ea414af241d8d1bb0c2238dbae056fe150
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
-    kbld.carvel.dev/origins: |
-      - resolved:
-          tag: 0.1.0
-          url: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.0
-  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:543f1047f8f0009711b1d22ccfd623def805d047bedf347c3397bc458bb473d1
-- annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.1
+    kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.1
     kbld.carvel.dev/origins: |
       - resolved:
           tag: 0.1.1
-          url: ghcr.io/vrabbi/tap-oss-package:0.1.1
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:bf74b4a14681adfe1ed01b4d9230177f48a1c30ccbcddc091b9b519fc4f1fac4
+          url: ghcr.io/vrabbi/ootb-supply-chains-package:0.1.1
+  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:6119cb4941f451c0ea856f789cac80e6dbd42470a46f05d1f174f7c6ec72e6cb
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.1.3
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.3
+          url: ghcr.io/vrabbi/tap-oss-package:0.1.3
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:463d44ae50fb06b2d84c79c613852b9c7250dbe0c1998f5f4ff31144ee8cf5b2
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

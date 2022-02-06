@@ -37,7 +37,7 @@ The required values are:
 knative:
   domain:
     name: # Domain suffix for all ingress objects created in the system and deployed via Knative. if type is not real leave this field empty
-    type: real # can be real, nip.io or sslip.io
+    type: real # can be real, nip.io or sslip.io ##IMPORTANT## if running on a docker based TCE cluster you can only use real here or the pakage will fail to reconcile
 ```  
 
 ## DEV NAMESPACE PREPERATION

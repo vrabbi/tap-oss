@@ -14,7 +14,7 @@ spec:
   packageRef:
     refName: ootb-supply-chains.tap.oss
     versionSelection:
-      constraints: 0.1.0
+      constraints: 0.1.1
   values:
   - secretRef:
       name: ootb-supply-chains-values
