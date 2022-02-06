@@ -1,0 +1,21 @@
+apiVersion: carto.run/v1alpha1
+kind: Workload
+metadata:
+  name: go-demo-app
+  labels:
+    app.tanzu.vmware.com/workload-type: web
+spec:
+  serviceAccountName: default
+  env:
+    - name: SPRING_PROFILES_ACTIVE
+      value: mysql
+  params:
+    - name: containerPort
+      value: 8080
+    - name: ingressDomain
+      value: eks.vrabbi.cloud
+  source:
+    git:
+      url: https://github.com/vrabbi/scott-petclinic
+      ref:
+        branch: master
