@@ -1,10 +1,10 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: dev-ns-preperation.tap.oss.0.1.0
+  name: dev-ns-preperation.tap.oss.0.2.0
 spec:
   refName: dev-ns-preperation.tap.oss
-  releaseNotes: Developer namespace preperation for TAP workloads v0.1.0
+  releaseNotes: Developer namespace preperation for TAP workloads v0.2.0
   releasedAt: "2022-01-31T12:00:00Z"
   template:
     spec:
@@ -12,7 +12,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/dev-ns-preperation-package:0.1.0
+          image: ghcr.io/vrabbi/dev-ns-preperation-package:0.2.0
       template:
       - ytt:
           paths:
@@ -60,4 +60,4 @@ spec:
                 default: go
                 description: Supported languages are go and java
       title:  dev-ns-preperation.tap.oss 0.1.0 values schema
-  version: 0.1.0
+  version: 0.2.0
