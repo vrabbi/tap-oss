@@ -1,7 +1,7 @@
 #@ load("@ytt:data", "data")
 #@ install = True
 #@ for i in data.values.disabled_packages:
-#@   if i == "cartographer.tap.oss":
+#@   if i == "service-bindings.tap.oss":
 #@     install = False
 #@   end
 #@ end
@@ -9,16 +9,16 @@
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
 metadata:
-  name: cartographer
+  name: service-bindings
   namespace: tap-oss
   annotations:
-    kapp.k14s.io/change-group: cartographer
+    kapp.k14s.io/change-group: service-bindings
     kapp.k14s.io/change-rule.cert-manager: "upsert after upserting cert-manager"
     kapp.k14s.io/change-rule.serviceaccount: "delete before deleting serviceaccount"
 spec:
   serviceAccountName: tap-oss-install-sa
   packageRef:
-    refName: cartographer.tap.oss
+    refName: service-bindings.tap.oss
     versionSelection:
-      constraints: 0.2.1
+      constraints: 0.6.0
 #@ end

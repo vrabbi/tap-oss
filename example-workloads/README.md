@@ -19,13 +19,16 @@ kubectl apply -f workload.yaml
 ```bash
 ## Get all workloads in the current namespace
 kubectl get workload
-
+```  
+```bash
 ## get the tekton pipeline runs (Relevant in testing,kaniko and gitops Supply Chains)
 kubectl get pipelineruns,taskruns
-
+```  
+```bash
 ## Get the Kpack resources utilized for building our image (relevant for all Supply chains except the Kaniko Supply Chain)
-kubectl bet cnbimage,build
-
+kubectl get cnbimage,build
+```  
+```bash
 ## Get all resources that have been generated as part of the supply chain - requires the kubectl-lineage plugin
 kubectl lineage workload/<WORKLOAD NAME> -o split wide
 ```  

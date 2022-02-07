@@ -3,8 +3,8 @@ kind: Workload
 metadata:
   name: dotnet-core-demo-app
   labels:
-    app.tanzu.vmware.com/workload-type: web
-    app.tanzu.vmware.com/gitops: "true"
+    apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/gitops: "true"
 spec:
   serviceAccountName: default
   source:

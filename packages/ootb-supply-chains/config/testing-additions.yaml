@@ -51,14 +51,21 @@ spec:
       taskRef: {name: $(selected.metadata.name)$}
       params: $(runnable.spec.inputs.params)$
 ---
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-testing-supply-chain":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
   name: ootb-testing-supply-chain
 spec:
   selector:
-    app.tanzu.vmware.com/workload-type: web
-    app.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-tests: "true"
   resources:
     - name: source-provider
       templateRef:
@@ -89,6 +96,7 @@ spec:
       images:
         - resource: image-builder
           name: image
+#@ end
 #@ end
 #@ end
 #@ end

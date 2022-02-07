@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: service-bindings.tap.oss
+  annotations:
+    kapp.k14s.io/change-group: carto.run/meta
+spec:
+  displayName: service-bindings
+  providerName: VMware
+  shortDescription: Service Bindings for Kubernetes
+  supportDescription: https://github.com/vmware-labs/service-bindings
+  longDescription: |-
+    Service Bindings for Kubernetes implements the Service Binding Specification for Kubernetes.
+    This allows for an easy way to bind backend services to workloads in a cloud native way.
+  maintainers:
+  - name: VMware

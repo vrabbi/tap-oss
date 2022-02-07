@@ -203,6 +203,13 @@ spec:
         name: kaniko-build-pipeline
     serviceAccountName: #@ data.values.workload.spec.serviceAccountName
 ---
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-basic-supply-chain-with-kaniko":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
@@ -233,3 +240,4 @@ spec:
   selector:
     apps.tanzu.vmware.com/workload-type: web
     apps.tanzu.vmware.com/image-builder: kaniko
+#@ end
