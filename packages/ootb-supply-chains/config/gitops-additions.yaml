@@ -283,6 +283,13 @@ spec:
               imagePullSecrets:
                 - name: registry-credentials
 ---
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-gitops-supply-chain":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
@@ -320,6 +327,7 @@ spec:
       configs:
         - resource: config-provider
           name: data
+#@ end
 #@ end
 #@ end
 #@ end
