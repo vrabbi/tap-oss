@@ -14,7 +14,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/tap-oss-package:0.1.4
+          image: ghcr.io/vrabbi/tap-oss-package:0.2.0
       template:
       - ytt:
           paths:
@@ -229,5 +229,5 @@ spec:
           description: list of package names to disable (e.g. kpack.tap.oss)
           items:
             type: string
-      title: tap-install.tap.oss.0.1.4 values schema
+      title: tap-install.tap.oss.0.2.0 values schema
   version: 0.2.0
