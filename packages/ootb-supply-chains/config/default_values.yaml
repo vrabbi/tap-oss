@@ -1,5 +1,7 @@
 #@data/values
 ---
+disable_specific_supply_chains:
+- ""
 image_prefix: ""
 gitops:
   configure: true
