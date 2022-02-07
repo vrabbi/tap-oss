@@ -102,3 +102,55 @@ tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.0 -f tap-oss-
 kubectl get pkgi -n tap-oss
 ```  
 6. Enjoy!
+7. To see the status of the Platform you can use the script in the root of this repo "check-tap-oss-status.sh"
+```bash
+chmod +x check-tap-oss-status.sh
+./check-tap-oss-status.sh
+```  
+This will return output similar to:
+```
+Package Repository Status: Reconcile succeeded
+Package Install Statuses:
+  * TAP Installation Package: Reconcile succeeded
+  * Cert Manager: Reconcile succeeded
+  * Contour: Reconcile succeeded
+  * Knative Serving: Reconcile succeeded
+  * Flux Source Controller: Reconcile succeeded
+  * Developer Namespace Preperation: Reconcile succeeded
+  * Kpack: Reconcile succeeded
+  * Kpack Configuration: Reconcile succeeded
+  * OOTB Supply Chains: Reconcile succeeded
+  * Service Bindings: Reconcile succeeded
+  * Tekton: Reconcile succeeded
+Custom Resource Statuses:
+  * Kpack:
+    * Cluster Stack: Ready = True
+    * Cluster Store: Ready = True
+    * Cluster Builder: Ready = True - (harbor.vrabbi.cloud/tap-oss/builder@sha256:5211a8a2324a1aeadb4ba6a00e10cc06d607a89c131d2c21f60ec4a2d1e1748b)
+Configured Supply Chains:
+  ootb-basic-supply-chain Selectors:
+    apps.tanzu.vmware.com/workload-type: "web"
+
+  ootb-basic-supply-chain-with-kaniko Selectors:
+    apps.tanzu.vmware.com/image-builder: "kaniko"
+    apps.tanzu.vmware.com/workload-type: "web"
+
+  ootb-gitops-supply-chain Selectors:
+    apps.tanzu.vmware.com/gitops: "true"
+    apps.tanzu.vmware.com/workload-type: "web"
+
+  ootb-svc-binding-native-k8s-deployment Selectors:
+    apps.tanzu.vmware.com/has-db-binding: "true"
+    apps.tanzu.vmware.com/native-k8s-deployment: "true"
+    apps.tanzu.vmware.com/workload-type: "web"
+
+  ootb-testing-supply-chain Selectors:
+    apps.tanzu.vmware.com/has-tests: "true"
+    apps.tanzu.vmware.com/workload-type: "web"
+
+Deployed Workloads:
+  petclinic-demo-app [default] Status:
+    Ready = False
+    Applied Supply Chain: ootb-svc-binding-native-k8s-deployment
+```
+
