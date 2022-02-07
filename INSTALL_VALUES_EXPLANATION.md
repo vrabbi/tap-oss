@@ -65,6 +65,7 @@ This package will install 1 to 3 supply chains to help you getting started with 
 The required values are:  
 ```
 ootb_supply_chains:
+  disable_specific_supply_chains: # Array of supply chains to not install. options are: ootb-basic-supply-chain, ootb-gitops-supply-chain, ootb-basic-supply-chain-with-kaniko, and ootb-testing-supply-chain
   image_prefix: # Prefix for image creation path. the workload name will be added as the suffix. should be in the format of <REGISTRY>/<PROJECT or USERNAME>/ or <REGISTRY>/<PROJECT or USERNAME>/<SOME STRING>
   gitops:
     configure: # boolean value of true or false. if set to true, a gitops supply chain will be created. this requires additional inputs which are found in the gitops.git_writer section bellow.
@@ -82,3 +83,22 @@ ootb_supply_chains:
   testing:
     configure: true # boolean value of true or false. if set to true, a supply chain with a tekton step doing source code scanning is created
 ```
+## DISBALING PACKAGE INSTALLATIONS
+While it is strongly suggested to install the full stack of this platform to gain all capabilities you may want to disable specific packages from being installed.  
+It is possible to either install every package manually which may be viable in highly automated environments, or you can still use the meta package but simply disable specific packages from being installed:
+```
+disabled_packages:
+  - "" # List the package you want to disable being installed.
+```  
+The supported values for this array are:
+* **cartographer.tap.oss** - This is the core of TAP so should not be removed unless you have cartographer already installed
+* **cert-manager.tap.oss** - required for knative and contour to work well so should not be removed unless you have cert manager already installed
+* **contour.tap.oss** - Required for Knative. only remove if you have contour already deployed
+* **dev-ns-preperation.tap.oss** - If you dont use this you will need to setup RBAC and other objects manually in any namespace you want to enable for TAP OSS
+* **flux-source-controller.tap.oss** - Required for all OOTB supply chains in this repo. only remove if you have flux v2 or source controller already deployed
+* **knative-serving.tap.oss** - Strongly recommended way to deploy apps. used in all but one OOTB supply chain so should only be disabled if you have knative pre installed.
+* **kpack-config.tap.oss** - For easy installation this package gives you a simple UX. for production deployments, you should configure kpack with more care and consideration.
+* **kpack.tap.oss** - For all but 1 OOTB Supply chain kpack is used to build our images. should only be disabled if you have kpack or TBS pre installed.
+* **ootb-supply-chains.tap.oss** - Gives an easy way to get started by exposing different supply chains to get you started. if disabled, you will need to manually create a supply chain before you can deploy a workload.
+* **tekton.tap.oss** - Used in all but 1 OOTB supply chain. should be disabled only if you have pre installed tekton
+* **service-bindings.tap.oss** - Used in 1 OOTB supply chain currently. if you disable this package, binding to backend services will be very complex.
