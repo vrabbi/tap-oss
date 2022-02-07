@@ -1,9 +1,11 @@
 apiVersion: carto.run/v1alpha1
 kind: Workload
 metadata:
-  name: go-demo-app
+  name: petclinic-demo-app
   labels:
     apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/has-db-binding: "true"
+    apps.tanzu.vmware.com/native-k8s-deployment: "true"
 spec:
   serviceAccountName: default
   env:
