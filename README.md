@@ -20,8 +20,10 @@ This package repository includes the following packages:
 9. **knative-serving.tap.oss** - This is the TCE Knative Serving package simply in the same repo to not have a requirement to install the TCE repo as well  
 10. **cert-manager.tap.oss** - This is the TCE Cert Manager package simply in the same repo to not have a requirement to install the TCE repo as well  
 11. **contour.tap.oss** - This is the TCE Contour package simply in the same repo to not have a requirement to install the TCE repo as well  
+12. **service-bindings.tap.oss** - This is a package that allows simple binding of workloads to backend service using the service bindings project  
   
 ## Installation instructions on TCE and TKGm
+#### NOTE: Should work on any Kubernetes platform but has not been tested on other platforms yet and would require installing kapp controller first
 1. Create the TAP OSS namespace  
 ```bash
 kubectl create namespace tap-oss
