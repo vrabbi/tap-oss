@@ -9,7 +9,7 @@ spec:
     spec:
       fetch:
       - imgpkgBundle:
-          image: vmware/labs-service-bindings-manager:0.6.0@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
+          image: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
       template:
       - kbld:
           paths:
