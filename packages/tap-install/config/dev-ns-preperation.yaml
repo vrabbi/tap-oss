@@ -22,7 +22,7 @@ spec:
   packageRef:
     refName: dev-ns-preperation.tap.oss
     versionSelection:
-      constraints: 0.1.0
+      constraints: 0.2.0
   values:
   - secretRef:
       name: dev-ns-preperation-values
