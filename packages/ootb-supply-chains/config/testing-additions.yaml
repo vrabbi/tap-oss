@@ -51,6 +51,13 @@ spec:
       taskRef: {name: $(selected.metadata.name)$}
       params: $(runnable.spec.inputs.params)$
 ---
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-testing-supply-chain":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
@@ -89,6 +96,7 @@ spec:
       images:
         - resource: image-builder
           name: image
+#@ end
 #@ end
 #@ end
 #@ end
