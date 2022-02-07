@@ -1,7 +1,7 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: tap-install.tap.oss.0.1.4
+  name: tap-install.tap.oss.0.2.0
 spec:
   licenses:
   - Apache 2.0
@@ -230,4 +230,4 @@ spec:
           items:
             type: string
       title: tap-install.tap.oss.0.1.4 values schema
-  version: 0.1.4
+  version: 0.2.0
