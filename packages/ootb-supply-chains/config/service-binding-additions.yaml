@@ -105,6 +105,13 @@ spec:
         kind: Deployment
         name: $(workload.metadata.name)$
 ---
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-svc-binding-native-k8s-deployment":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
 apiVersion: carto.run/v1alpha1
 kind: ClusterSupplyChain
 metadata:
@@ -148,3 +155,4 @@ spec:
       templateRef:
         kind: ClusterTemplate
         name: workload-k8s-binding
+#@ end
