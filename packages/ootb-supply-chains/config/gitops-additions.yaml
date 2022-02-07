@@ -296,8 +296,8 @@ metadata:
   name: ootb-gitops-supply-chain
 spec:
   selector:
-    app.tanzu.vmware.com/workload-type: web
-    app.tanzu.vmware.com/gitops: "true"
+    apps.tanzu.vmware.com/workload-type: web
+    apps.tanzu.vmware.com/gitops: "true"
   resources:
     - name: source-provider
       templateRef:
