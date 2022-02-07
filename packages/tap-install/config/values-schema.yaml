@@ -65,6 +65,9 @@ dev_ns_preperation:
       base64_encoded_known_hosts: ""
 #@schema/desc "Settings for auto configuring OOTB Supply Chains"
 ootb_supply_chains:
+  #@schema/desc "List of Supply chains to disable"
+  disable_specific_supply_chains:
+  - ""
   #@schema/desc "Image Prefix for workload images to be created with"
   image_prefix: ""
   #@schema/desc "Image Prefix for workload images to be created with"
