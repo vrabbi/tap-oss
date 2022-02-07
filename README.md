@@ -87,6 +87,8 @@ ootb_supply_chains:
       port: ""
   testing:
     configure: true
+disabled_packages:
+  - ""
 EOF
 ```  
 4. Update values file with your configuration values  
