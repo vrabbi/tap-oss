@@ -16,11 +16,11 @@ images:
           url: ghcr.io/vrabbi/cert-injection-webhook-package:0.1.0
   image: ghcr.io/vrabbi/cert-injection-webhook-package@sha256:bee3470f023215c791d944c19608f02cd0b724119e5fa8e08048b45ec68518e8
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/dev-ns-preperation-package:0.2.0
+    kbld.carvel.dev/id: ghcr.io/vrabbi/dev-ns-preperation-package:0.2.1
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.2.0
-          url: ghcr.io/vrabbi/dev-ns-preperation-package:0.2.0
+          tag: 0.2.1
+          url: ghcr.io/vrabbi/dev-ns-preperation-package:0.2.1
   image: ghcr.io/vrabbi/dev-ns-preperation-package@sha256:bb1e9612d93ef9613262d3d78a0fae5481e23832ed9cf7ad09a5eff6922f07c7
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
