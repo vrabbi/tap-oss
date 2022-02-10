@@ -8,7 +8,6 @@
 * GitOps Supply Chain with Poly Repo Configuration
   
 ## **Extend the core packages to include:**
-* [Cert Injection Webhook](https://github.com/vmware-tanzu/cert-injection-webhook) - WIP
 * [Backstage](https://backstage.io/) - WIP
 * [Backstage Software Templates integration (Similar to App Accelerator)](https://backstage.io/docs/features/software-templates/software-templates-index)
   
