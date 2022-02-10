@@ -1,0 +1,18 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/cert-injector-webhook:0.1.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.0
+          url: ghcr.io/vrabbi/cert-injector-webhook:0.1.0
+  image: ghcr.io/vrabbi/cert-injector-webhook@sha256:5f81a89db6d41883be79e67d73ff41207427256afa0f3a02456dc17507eb598f
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/setup-ca-certs:0.1.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.1.0
+          url: ghcr.io/vrabbi/setup-ca-certs:0.1.0
+  image: ghcr.io/vrabbi/setup-ca-certs@sha256:b97f7203c09c652ba9e2065fd98574ac971de8ddb309a6cc37dd1220c3c84912
+kind: ImagesLock

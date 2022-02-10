@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: cert-injection-webhook.tap.oss
+spec:
+  categories:
+  - webhook
+  - config
+  - system
+  - certificates
+  displayName: cert-injection-webhook
+  longDescription: Cert Injection Webhook package used primarily with Kpack to auto inject CA certs and Proxy details into the build pods
+  maintainers:
+  - name: Scott Rosenberg
+  providerName: TeraSky
+  shortDescription: Cert Injection Webhook for Kpack

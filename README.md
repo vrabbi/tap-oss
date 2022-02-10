@@ -16,14 +16,37 @@ This package repository includes the following packages:
 5. **kpack-config.tap.oss** - A package with configuration to setup kpack with Paketo buildpacks  
 6. **ootb-supply-chains.tap.oss** - A package that includes Supply chains for use in the cluster  
 7. **tekton.tap.oss** - A package to install Tekton to run pipelines within our supply chains  
-8. **kpack.tap.oss** - This is the TCE Kpack package simply in the same repo to not have a requirement to install the TCE repo as well  
-9. **knative-serving.tap.oss** - This is the TCE Knative Serving package simply in the same repo to not have a requirement to install the TCE repo as well  
-10. **cert-manager.tap.oss** - This is the TCE Cert Manager package simply in the same repo to not have a requirement to install the TCE repo as well  
-11. **contour.tap.oss** - This is the TCE Contour package simply in the same repo to not have a requirement to install the TCE repo as well  
-12. **service-bindings.tap.oss** - This is a package that allows simple binding of workloads to backend service using the service bindings project  
+8. **service-bindings.tap.oss** - This is a package that allows simple binding of workloads to backend service using the service bindings project  
+9. **cert-injection-webhook.tap.oss** - This is a package that allows injection via webhook of CA certs into pods (used primarily for Kpack) to suppot registries and source control systems with self signed certs  
+10. **kpack.tap.oss** - This is the TCE Kpack package simply in the same repo to not have a requirement to install the TCE repo as well  
+11. **knative-serving.tap.oss** - This is the TCE Knative Serving package simply in the same repo to not have a requirement to install the TCE repo as well  
+12. **cert-manager.tap.oss** - This is the TCE Cert Manager package simply in the same repo to not have a requirement to install the TCE repo as well  
+13. **contour.tap.oss** - This is the TCE Contour package simply in the same repo to not have a requirement to install the TCE repo as well  
+
+## Installation instructions
+### TCE and TKGm 1.4+ users can skip to step 3 right away
+If you are not running on a TKGm 1.4+ or TCE 0.9.1+ cluster, you must install the Tanzu CLI on your machine and install Kapp Controller in your cluster.  
+1. Install Tanzu CLI - [Full instructions on TCE website](https://tanzucommunityedition.io/docs/latest/cli-installation/)
+* Linux
+```bash
+curl -H "Accept: application/vnd.github.v3.raw" \
+    -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | \
+    bash -s v0.9.1 linux
+```  
+* Mac
+```bash
+brew install vmware-tanzu/tanzu/tanzu-community-edition
+```  
+* Windows
+```bash
+choco install tanzu-community-edition
+```
+2. Install Kapp Controller
+```bash
+kubectl apply -f https://github.com/vmware-tanzu/carvel-kapp-controller/releases/latest/download/release.yml
+```  
   
-## Installation instructions on TCE and TKGm
-#### NOTE: Should work on any Kubernetes platform but has not been tested on other platforms yet and would require installing kapp controller first
+#### NOTE: Should work on any Kubernetes platform but has not been tested on all major platforms yet. if you have any issue with use on different platforms please open an issue
 1. Create the TAP OSS namespace  
 ```bash
 kubectl create namespace tap-oss
@@ -46,6 +69,11 @@ kpack:
 kpack_config:
   builder:
     tag: <FILL ME IN>
+cert_injection_webhook:
+  ca_cert_data: <FILL ME IN>
+  http_proxy: <FILL ME IN>
+  https_proxy: <FILL ME IN>
+  no_proxy: <FILL ME IN>
 knative:
   domain:
     name: <FILL ME IN>

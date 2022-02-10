@@ -1,20 +1,20 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: tap-install.tap.oss.0.2.0
+  name: tap-install.tap.oss.0.2.1
 spec:
   licenses:
   - Apache 2.0
   refName: tap-install.tap.oss
   releaseNotes: TAP OSS Stack
-  releasedAt: "2022-01-31T12:00:00Z"
+  releasedAt: "2022-09-02T12:00:00Z"
   template:
     spec:
       deploy:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/tap-oss-package:0.2.0
+          image: ghcr.io/vrabbi/tap-oss-package:0.2.1
       template:
       - ytt:
           paths:
@@ -229,5 +229,5 @@ spec:
           description: list of package names to disable (e.g. kpack.tap.oss)
           items:
             type: string
-      title: tap-install.tap.oss.0.2.0 values schema
-  version: 0.2.0
+      title: tap-install.tap.oss.0.2.1 values schema
+  version: 0.2.1

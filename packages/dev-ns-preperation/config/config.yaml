@@ -281,4 +281,165 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: default
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kaniko
+  namespace: #@ ns.name
+spec:
+  params:
+  - name: IMAGE
+    description: Name (reference) of the image to build.
+  - name: DOCKERFILE
+    description: Path to the Dockerfile to build.
+    default: ./Dockerfile
+  - name: CONTEXT
+    description: The build context used by Kaniko.
+    default: ./
+  - name: EXTRA_ARGS
+    type: array
+    default: []
+  - name: BUILDER_IMAGE
+    description: The image on which builds will run (default is v1.5.1)
+    default: gcr.io/kaniko-project/executor:v1.5.1@sha256:c6166717f7fe0b7da44908c986137ecfeab21f31ec3992f6e128fff8a94be8a5
+  workspaces:
+  - name: source
+    description: Holds the context and docker file
+  - name: dockerconfig
+    description: Includes a docker `config.json`
+    optional: true
+    mountPath: /kaniko/.docker
+  results:
+  - name: IMAGE-DIGEST
+    description: Digest of the image just built.
+  steps:
+  - name: build-and-push
+    workingDir: $(workspaces.source.path)
+    image: $(params.BUILDER_IMAGE)
+    args:
+    - $(params.EXTRA_ARGS[*])
+    - --dockerfile=$(params.DOCKERFILE)
+    - --context=$(workspaces.source.path)/$(params.CONTEXT)
+    - --destination=$(params.IMAGE)
+    - --digest-file=/tekton/results/IMAGE-DIGEST
+    securityContext:
+      runAsUser: 0
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: kaniko-source
+  namespace: #@ ns.name
+spec:
+  params:
+  - name: blob-url
+    type: string
+  - name: blob-revision
+    type: string
+  steps:
+  - command:
+    - bash
+    - -cxe
+    - |-
+      set -o pipefail
+      echo $(params.blob-revision)
+      cd $(workspaces.output.path)
+      curl -SL $(params.blob-url) | tar xvzf -
+    image: ghcr.io/vrabbi/golang:latest
+    name: extract-source
+    resources: {}
+  workspaces:
+    - name: output
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: export-image-ref
+  namespace: #@ ns.name
+spec:
+  params:
+  - name: image-url
+    type: string
+  - name: image-digest
+    type: string
+  steps:
+  - command:
+    - bash
+    - -cxe
+    - |-
+      set -o pipefail
+      echo $(params.image-url)@$(params.image-digest) | tr -d '\n' | tee $(results.imageRef.path)
+    image: ghcr.io/vrabbi/golang:latest
+    name: extract-source
+    resources: {}
+  workspaces:
+    - name: output
+  results:
+    - name: imageRef
+      description: The Image Ref to be used by TAP for future supply chain steps
+---
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: kaniko-runner
+  namespace: #@ ns.name
+spec:
+  params:
+  - description: Flux GitRepository URL source
+    name: source-url
+    type: string
+  - description: Flux GitRepository Revision
+    name: source-revision
+    type: string
+  - description: Image path to be pushed to
+    name: image_url
+    type: string
+  results:
+  - description: ""
+    name: imageRef
+    value: $(tasks.export-image-ref.results.imageRef)
+  tasks:
+  - name: unpack-source
+    params:
+    - name: blob-url
+      value: $(params.source-url)
+    - name: blob-revision
+      value: $(params.source-revision)
+    taskRef:
+      kind: Task
+      name: kaniko-source
+    workspaces:
+    - name: output
+      workspace: source-ws
+  - name: kaniko
+    params:
+    - name: IMAGE
+      value: $(params.image_url)
+    runAfter:
+    - unpack-source
+    taskRef:
+      kind: Task
+      name: kaniko
+    workspaces:
+    - name: source
+      workspace: source-ws
+  - name: export-image-ref
+    params:
+    - name: image-url
+      value: $(params.image_url)
+    - name: image-digest
+      value: $(tasks.kaniko.results.IMAGE-DIGEST)
+    runAfter:
+    - kaniko
+    taskRef:
+      kind: Task
+      name: export-image-ref
+    workspaces:
+    - name: output
+      workspace: source-ws
+  workspaces:
+  - name: source-ws
+  - name: dockerconfig
+    optional: true
 #@ end

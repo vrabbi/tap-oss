@@ -29,6 +29,16 @@ kpack_config:
   builder:
     tag: # The full path where you want the builder created in your registry
 ```  
+## CERT INJECTION WEBHOOK
+This is needed to support self signed registries or source control systems with kpack. This allows us to configure proxy and CA values to be injected into kpack build pods automatically via a mutating webhook
+The Supported values are:
+```
+cert_injection_webhook:
+  ca_cert_data: # BASE64 encoded CA cert data to inject into the Pods
+  http_proxy: # HTTP Proxy ENV Variable value to inject into the build pods
+  https_proxy: # HTTPS Proxy ENV Variable value to inject into the build pods
+  no_proxy: # NO Proxy ENV Variable value to inject into the build pods
+```  
 
 ## KNATIVE
 The configuration options are the same as the TCE Package.  
@@ -65,7 +75,7 @@ This package will install 1 to 3 supply chains to help you getting started with 
 The required values are:  
 ```
 ootb_supply_chains:
-  disable_specific_supply_chains: # Array of supply chains to not install. options are: ootb-basic-supply-chain, ootb-gitops-supply-chain, ootb-basic-supply-chain-with-kaniko, and ootb-testing-supply-chain
+  disable_specific_supply_chains: # Array of supply chains to not install. options are: ootb-basic-supply-chain, ootb-gitops-supply-chain, ootb-basic-supply-chain-with-kaniko, ootb-testing-supply-chain and ootb-gitops-supply-chain-with-svc-bindings
   image_prefix: # Prefix for image creation path. the workload name will be added as the suffix. should be in the format of <REGISTRY>/<PROJECT or USERNAME>/ or <REGISTRY>/<PROJECT or USERNAME>/<SOME STRING>
   gitops:
     configure: # boolean value of true or false. if set to true, a gitops supply chain will be created. this requires additional inputs which are found in the gitops.git_writer section bellow.
@@ -102,3 +112,4 @@ The supported values for this array are:
 * **ootb-supply-chains.tap.oss** - Gives an easy way to get started by exposing different supply chains to get you started. if disabled, you will need to manually create a supply chain before you can deploy a workload.
 * **tekton.tap.oss** - Used in all but 1 OOTB supply chain. should be disabled only if you have pre installed tekton
 * **service-bindings.tap.oss** - Used in 1 OOTB supply chain currently. if you disable this package, binding to backend services will be very complex.
+* **cert-injection-webhook.tap.oss** - Used in kpack. if you disable this package, you cannot build images with source from a self signed source or push to a registry with self signed certs.

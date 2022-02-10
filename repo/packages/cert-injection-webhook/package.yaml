@@ -1,0 +1,53 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: cert-injection-webhook.tap.oss.0.1.0
+spec:
+  licenses:
+  - Apache 2.0
+  refName: cert-injection-webhook.tap.oss
+  releaseNotes: cert injection webhook 0.1.0 https://github.com/vmware-tanzu/cert-injection-webhook
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/cert-injection-webhook-package:0.1.0
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  valuesSchema:
+    openAPIv3:
+      properties:
+        labels:
+          type: array
+          items:
+            type: string
+            default: kpack.io/build
+          default: ["kpack.io/build"]
+        annotations:
+          type: array
+          items:
+            type: string
+            default: ""
+          default: []
+        ca_cert_data:
+          type: string
+          default: ""
+        http_proxy:
+          type: string
+          default: ""
+        https_proxy:
+          type: string
+          default: ""
+        no_proxy:
+          type: string
+          default: ""
+      title: cert-injection-webhook.tap.oss.0.1.0 values schema
+  version: 0.1.0

@@ -5,6 +5,14 @@ contour:
   envoy:
     service:
       type: LoadBalancer
+cert_injection_webhook:
+  labels:
+  - "kpack.io/build"
+  annotations: []
+  ca_cert_data: ""
+  http_proxy: ""
+  https_proxy: ""
+  no_proxy: ""
 kpack:
   kp_default_repository: "harbor.tap.oss"
   kp_default_repository_password: "Harbor12345"

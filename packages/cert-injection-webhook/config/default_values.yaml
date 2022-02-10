@@ -1,0 +1,14 @@
+#@data/values-schema
+---
+pod_webhook_image: ghcr.io/vrabbi/cert-injector-webhook:0.1.0
+setup_ca_certs_image: ghcr.io/vrabbi/setup-ca-certs:0.1.0
+
+labels: 
+  - "kpack.io/build"
+annotations:
+- ""
+
+ca_cert_data: ""
+http_proxy: ""
+https_proxy: ""
+no_proxy: ""

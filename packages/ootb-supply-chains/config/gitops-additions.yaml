@@ -236,7 +236,7 @@ spec:
             export CONFIG_MAP_FIELD=$(runnable.spec.inputs.input_config_map_field)$
             export WORKLOAD_NAME=$(runnable.spec.inputs.input_config_map_name)$
             export DATA="$(runnable.spec.inputs.data)$"
-            mkdir $WORKLOAD_NAME
+            mkdir -p $WORKLOAD_NAME
             echo "$DATA" | tee "$WORKLOAD_NAME/$CONFIG_MAP_FIELD"
             git add .
             git commit --allow-empty -m "[$WORKLOAD_NAME] - $COMMIT_MESSAGE"
@@ -327,6 +327,117 @@ spec:
       configs:
         - resource: config-provider
           name: data
+#@ end
+#@ install = True
+#@ for i in data.values.disable_specific_supply_chains:
+#@   if i == "ootb-gitops-supply-chain-with-svc-bindings":
+#@     install = False
+#@   end
+#@ end
+#@ if install == True:
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterConfigTemplate
+metadata:
+  name: config-template-with-svc-bindings
+spec:
+  configPath: .data.manifest
+  ytt: |
+    #@ load("@ytt:data", "data")
+    #@ load("@ytt:yaml", "yaml")
+    #@ if hasattr(data.values.workload.spec, "serviceClaims"):
+    #@ def claims():
+    ---
+    apiVersion: servicebinding.io/v1alpha3
+    kind: ServiceBinding
+    metadata:
+      name: #@ data.values.workload.metadata.name + '-' + data.values.workload.spec.serviceClaims[0].name
+    spec:
+      service:
+        apiVersion: #@ data.values.workload.spec.serviceClaims[0].ref.apiVersion
+        kind: #@ data.values.workload.spec.serviceClaims[0].ref.kind
+        name: #@ data.values.workload.spec.serviceClaims[0].ref.name
+      workload:
+        apiVersion: serving.knative.dev/v1
+        kind: Service
+        name: #@ data.values.workload.metadata.name
+    #@ end
+    #@ end
+    #@ def service():
+    ---
+    apiVersion: serving.knative.dev/v1
+    kind: Service
+    metadata:
+      name: #@ data.values.workload.metadata.name
+      labels:
+        #@ if hasattr(data.values.workload.metadata, "labels"):
+        #@ if hasattr(data.values.workload.metadata.labels, "app.kubernetes.io/part-of"):
+        app.kubernetes.io/part-of: #@ data.values.workload.metadata.labels["app.kubernetes.io/part-of"]
+        #@ end
+        #@ end
+        carto.run/workload-name: #@ data.values.workload.metadata.name
+        app.kubernetes.io/component: run
+    spec:
+      template:
+        spec:
+          containers:
+            - name: workload
+              image: #@ data.values.image
+              securityContext:
+                runAsUser: 1000
+          imagePullSecrets:
+            - name: registry-credentials
+    #@ end
+    ---
+    apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: #@ data.values.workload.metadata.name
+    data:
+      #@ if hasattr(data.values.workload.spec, "serviceClaims"):
+      manifest: #@ yaml.encode(claims()) + "---\n" + yaml.encode(service())
+      #@ else:
+      manifest: #@ yaml.encode(service())
+      #@ end
+---
+apiVersion: carto.run/v1alpha1
+kind: ClusterSupplyChain
+metadata:
+  name: ootb-gitops-supply-chain-with-svc-bindings
+spec:
+  resources:
+  - name: source-provider
+    templateRef:
+      kind: ClusterSourceTemplate
+      name: source
+  - name: image-builder
+    params:
+    - name: image_prefix
+      value: #@ data.values.image_prefix
+    sources:
+    - name: source
+      resource: source-provider
+    templateRef:
+      kind: ClusterImageTemplate
+      name: image
+  - images:
+    - name: image
+      resource: image-builder
+    name: config-provider
+    templateRef:
+      kind: ClusterConfigTemplate
+      name: config-template-with-svc-bindings
+  - configs:
+    - name: data
+      resource: config-provider
+    name: git-writer
+    templateRef:
+      kind: ClusterTemplate
+      name: git-writer
+  selector:
+    apps.tanzu.vmware.com/gitops: "true"
+    apps.tanzu.vmware.com/has-bindings: "true"
+    apps.tanzu.vmware.com/workload-type: web
 #@ end
 #@ end
 #@ end

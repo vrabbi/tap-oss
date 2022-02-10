@@ -1,6 +1,6 @@
 #@data/values-schema
 ---
-#@schema/desc "Array of packages to disable installation of.
+#@schema/desc "Array of packages to disable installation of."
 disabled_packages:
 - ""
 #@schema/desc "TCE Contour package configuration"
@@ -9,6 +9,22 @@ contour:
     service:
       #@schema/desc "Service type for Envoy - Set to ClusterIP for local clusters. defaults to LoadBalancer"
       type: LoadBalancer
+#@schema/desc "Package Configuration for Cert Injection Webhook"
+cert_injection_webhook:
+  #@schema/desc "Pod labels to trigger CA Cert injection"
+  labels:
+  - "kpack.io/build"
+  #@schema/desc "Pod Annotations to trigger CA Cert injection"
+  annotations:
+  - ""
+  #@schema/desc "Base64 encoded CA Cert data to inject into pods"
+  ca_cert_data: ""
+  #@schema/desc "HTTP Proxy ENV Variable value to inject into Pods"
+  http_proxy: ""
+  #@schema/desc "HTTPS Proxy ENV Variable value to inject into Pods"
+  https_proxy: ""
+  #@schema/desc "No Proxy ENV Variable value to inject into Pods"
+  no_proxy: ""
 #@schema/desc "TCE Kpack package configuration"
 kpack:
   #@schema/desc "Default repo for kpack resources and images"
