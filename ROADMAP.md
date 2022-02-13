@@ -15,3 +15,14 @@
 * [Gitea](https://gitea.io/en-us/) - WIP
 * [PostgreSQL Operator](https://github.com/zalando/postgres-operator)
 * [MySQL Operator](https://github.com/mysql/mysql-operator)
+
+## Documentation
+* Document the minimal resources needed for the platform
+* Document how to troubleshoot a workload
+* Document links to helpful resources
+
+## Video Tutorials
+* Add Installation Video
+* Add Getting Started Video
+* Add Creating a supply chain Video
+* Add Troubleshooting Video
