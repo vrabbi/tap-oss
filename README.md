@@ -22,7 +22,6 @@ This package repository includes the following packages:
 11. **knative-serving.tap.oss** - This is the TCE Knative Serving package simply in the same repo to not have a requirement to install the TCE repo as well  
 12. **cert-manager.tap.oss** - This is the TCE Cert Manager package simply in the same repo to not have a requirement to install the TCE repo as well  
 13. **contour.tap.oss** - This is the TCE Contour package simply in the same repo to not have a requirement to install the TCE repo as well  
-These Following Packages are installed seperately and offer additional tooling not part of TAP:  
 14. **rabbitmq-cluster-operator.tap.oss** - [Seperate Installation] Deploys the RabbitMQ Cluster Operator and the Topology Operator. can be useful for the Service Bindings Supply Chain.  
 15. **argo-cd.tap.oss** - [Seperate Installation] Deploys ArgoCD. Can be useful when using GitOps Supply Chains for delivery in different clusters.  
 16. **argo-workflows.tap.oss** - [Seperate Installation] Deploys Argo Workflows. Can be used as an alternative to Tekton for steps in a supply chain.  
