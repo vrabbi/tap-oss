@@ -1,0 +1,1217 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: argo-workflows.tap.oss.0.2.5
+spec:
+  refName: argo-workflows.tap.oss
+  version: 0.2.5
+  releaseNotes: |
+        Argo Workflows is meant to orchestrate Kubernetes jobs in parallel. It uses DAG and step-based workflows
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        rbac: 
+          type: "object"
+          properties: 
+            singleNamespace: 
+              type: "boolean"
+              default: false
+              description: "Restrict Argo to only deploy into a single namespace by apply Roles and RoleBindings instead of the Cluster equivalents, and start argo-cli with the --namespaced flag. Use it in clusters with strict access policy."
+        createAggregateRoles: 
+          type: "boolean"
+          default: true
+          description: "Create Aggregated cluster roles"
+        server: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "server image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/argo-workflow-cli"
+                  description: "server image repository"
+                tag: 
+                  type: "string"
+                  default: "3.2.8-scratch-r0"
+                  description: "server image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "server image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "server image pull secrets"
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable server deployment"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of server replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Path to check for startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 300
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Server custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Server custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Server custom startupProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the server containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the server containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled server pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set server pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled server containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set server containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set server containers' Security Context runAsNonRoot"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create RBAC resources for the Argo workflows server"
+            extraArgs: 
+              type: "string"
+              default: ""
+              description: "Extra arguments for the server command line"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable authentication"
+                mode: 
+                  type: "string"
+                  default: "client"
+                  description: "Set authentication mode. Either `server`, `client` or `sso`."
+                sso: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable SSO configuration for the server auth mode"
+                    issuer: 
+                      type: "string"
+                      default: ""
+                      description: "Root URL for the OIDC identity provider"
+                    clientId: 
+                      type: "object"
+                      properties: 
+                        name: 
+                          type: "string"
+                          default: ""
+                          description: "Name of the secret containing the OIDC client ID"
+                        key: 
+                          type: "string"
+                          default: ""
+                          description: "Key in the secret to obtain the OIDC client ID"
+                    clientSecret: 
+                      type: "object"
+                      properties: 
+                        name: 
+                          type: "string"
+                          default: ""
+                          description: "Name of the secret containing the OIDC client secret"
+                        key: 
+                          type: "string"
+                          default: ""
+                          description: "Key in the secret to obtain the OIDC client secret"
+                    redirectUrl: 
+                      type: "string"
+                      default: ""
+                      description: "The OIDC redirect URL. Should be in the form <argo-root-url>/oauth2/callback."
+                    rbac: 
+                      type: "object"
+                      properties: 
+                        enabled: 
+                          type: "boolean"
+                          default: true
+                          description: "Create RBAC resources for SSO"
+                        secretWhitelist: 
+                          type: "array"
+                          default: "[]"
+                          description: "Restricts the secrets that the server can read"
+                    scopes: 
+                      type: "array"
+                      default: "[]"
+                      description: "Scopes requested from the SSO ID provider"
+            clusterWorkflowTemplates: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Create ClusterRole and CRB for the controoler to access ClusterWorkflowTemplates"
+                enableEditing: 
+                  type: "boolean"
+                  default: true
+                  description: "Give the server permissions to edit ClusterWorkflowTemplates"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create Pod Disruption Budget for the server component"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Sets the min number of pods availables for the Pod Disruption Budget"
+                maxUnavailable: 
+                  type: "number"
+                  default: 1
+                  description: "Sets the max number of pods unavailable for the Pod Disruption Budget"
+            secure: 
+              type: "boolean"
+              default: false
+              description: "Run Argo server in secure mode"
+            baseHref: 
+              type: "string"
+              default: "/"
+              description: "Base href of the Argo Workflows deployment"
+            containerPorts: 
+              type: "object"
+              properties: 
+                web: 
+                  type: "number"
+                  default: 2746
+                  description: "argo Server container port"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the server service account"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "server pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for server pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for server pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `server.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `server.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for server pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for server pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for server pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "server statefulset strategy type"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology spread constraints rely on node labels to identify the topology domain(s) that each Node is in"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternate scheduler for the server deployment"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "server pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the server container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to server nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for server nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for server nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the server pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the server container(s)"
+            sidecars: 
+              type: "object"
+              default: "{}"
+              description: "Add additional sidecar containers to the server pod(s)"
+            initContainers: 
+              type: "object"
+              default: "{}"
+              description: "Add additional init containers to the server pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "server service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 80
+                      description: "server service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "server service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "server service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "server service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "server service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for server service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra port to expose on the server service"
+        controller: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "controller image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/argo-workflow-controller"
+                  description: "controller image repository"
+                tag: 
+                  type: "string"
+                  default: "3.2.8-scratch-r0"
+                  description: "controller image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "controller image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "controller image pull secrets"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of controller replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on controller nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 90
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on controller nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Path to check for startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 300
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Controller custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Controller custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Controller custom startupProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the controller containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the controller containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled controller pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set controller pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled controller containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set controller containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set controller containers' Security Context runAsNonRoot"
+            containerPorts: 
+              type: "object"
+              properties: 
+                metrics: 
+                  type: "number"
+                  default: 9090
+                  description: "Port to expose controller metrics"
+                telemetry: 
+                  type: "number"
+                  default: 8081
+                  description: "Port to expose controller telemetry"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create RBAC resources for the Argo workflows controller"
+            existingConfigMap: 
+              type: "string"
+              default: ""
+              description: ""
+            extraArgs: 
+              type: "string"
+              default: ""
+              description: "Extra arguments for the controller command line"
+            config: 
+              type: "string"
+              default: "{}"
+              description: "Controller configmap configuration content"
+            instanceID: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable submission filtering based on instanceID attribute. Requires to set instanceID.useReleaseName or instanceID.explicitID"
+                useReleaseName: 
+                  type: "boolean"
+                  default: false
+                  description: "Use the release name to filter submissions"
+                explicitID: 
+                  type: "string"
+                  default: ""
+                  description: "Filter submissions based on an explicit instance ID"
+            containerRuntimeExecutor: 
+              type: "string"
+              default: "k8sapi"
+              description: "Specifies the container runtime for the executor"
+            clusterWorkflowTemplates: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to create a ClusterRole and Cluster Role Binding to access ClusterWokflowTemplates resources"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable controller metrics exporter"
+                path: 
+                  type: "string"
+                  default: "/metrics"
+                  description: "Path to expose controller metrics"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable prometheus service monitor configuration"
+            telemetry: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable telemetry for the controller"
+                path: 
+                  type: "string"
+                  default: "/telemetry"
+                  description: "Path to expose telemetry information"
+            workflowWorkers: 
+              type: "number"
+              default: 32
+              description: "Number of workflow workers to deploy"
+            podWorkers: 
+              type: "number"
+              default: 32
+              description: "Number of pod workers to deploy"
+            workflowNamespaces: 
+              type: "array"
+              default: "[\"default\"]"
+              description: "Namespaces allowed to run workflows"
+            logging: 
+              type: "object"
+              properties: 
+                level: 
+                  type: "string"
+                  default: "info"
+                  description: "Level for the controller logging"
+                globalLevel: 
+                  type: "string"
+                  default: "0"
+                  description: "Global logging level for the controller"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create Pod Disruption Budget for the controller component"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Sets the min number of pods availables for the Pod Disruption Budget"
+                maxUnavailable: 
+                  type: "number"
+                  default: 1
+                  description: "Sets the max number of pods unavailable for the Pod Disruption Budget"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name for the service account"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the controller service account"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "controller pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for controller pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for controller pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `controller.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `controller.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for controller pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for controller pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for controller pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "controller statefulset strategy type"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology spread constraints rely on node labels to identify the topology domain(s) that each Node is in"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternate scheduler for the server controller"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "controller pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the controller container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to controller nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for controller nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for controller nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the controller pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the controller container(s)"
+            sidecars: 
+              type: "object"
+              default: "{}"
+              description: "Add additional sidecar containers to the controller pod(s)"
+            initContainers: 
+              type: "object"
+              default: "{}"
+              description: "Add additional init containers to the controller pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "controller service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    metrics: 
+                      type: "number"
+                      default: 8080
+                      description: "Metrics port for the controller"
+                    telemetry: 
+                      type: "number"
+                      default: 8081
+                      description: "Telemetry port for the controller"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    metrics: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    telemetry: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTPS"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "controller service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "controller service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "controller service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "controller service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for controller service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra port to expose on the controller service"
+        executor: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "executor image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/argo-workflow-exec"
+                  description: "executor image repository"
+                tag: 
+                  type: "string"
+                  default: "3.2.7-debian-10-r7"
+                  description: "executor image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "executor image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "executor image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to server nodes"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled executor pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set executor pod's Security Context fsGroup"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for server"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "server.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            ingressClassName: 
+              type: "string"
+              default: ""
+              description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            selfSigned: 
+              type: "boolean"
+              default: false
+              description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        workflows: 
+          type: "object"
+          properties: 
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether to create a service account to run workflows"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Service account name to run workflows"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the workflows service account"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to create RBAC resource to run workflows"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable PostgreSQL subchart and controller persistence using PostgreSQL"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 5432
+                  description: "PostgreSQL port"
+            postgresqlUsername: 
+              type: "string"
+              default: "postgres"
+              description: "PostgreSQL username"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bn_argo_workflows"
+              description: "PortgreSQL database name"
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "PortgreSQL database password"
+        mysql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable MySQL subchart and controller persistence using MySQL"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 3306
+                  description: "MySQL port"
+            auth: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: "mysql"
+                  description: "MySQL username"
+                database: 
+                  type: "string"
+                  default: "bn_argo_workflows"
+                  description: "MySQL database name"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL database password"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable using externaldatabase and the controller to use persistence with it"
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "External Database server host"
+            port: 
+              type: "number"
+              default: 3306
+              description: "External Database server port"
+            username: 
+              type: "string"
+              default: "bn_wordpress"
+              description: "External Database username"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Database user password"
+            database: 
+              type: "string"
+              default: "bitnami_wordpress"
+              description: "External Database database name"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "The name of an existing secret with database credentials"
+            type: 
+              type: "string"
+              default: ""
+              description: "Either postgresql or mysql"
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/argo-workflows.tap.oss:0.2.5
+      template:
+      - helmTemplate:
+          path: "config/"
+      - kbld:
+          paths:
+          - "-"
+          - ".imgpkg/images.yml"
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

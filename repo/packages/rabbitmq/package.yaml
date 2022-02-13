@@ -1,0 +1,953 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: rabbitmq-cluster-operator.tap.oss.2.3.1
+spec:
+  refName: rabbitmq-cluster-operator.tap.oss
+  version: 2.3.1
+  releaseNotes: |
+        The RabbitMQ Cluster Kubernetes Operator automates provisioning, management, and operations of RabbitMQ clusters running on Kubernetes.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        rabbitmqImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "RabbitMQ Image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/rabbitmq"
+              description: "RabbitMQ Image repository"
+            tag: 
+              type: "string"
+              default: "3.8.27-debian-10-r25"
+              description: "RabbitMQ Image tag (immutable tags are recommended)"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "RabbitMQ Image pull secrets"
+        credentialUpdaterImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "RabbitMQ Default User Credential Updater Image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/rmq-default-credential-updater"
+              description: "RabbitMQ Default User Credential Updater Image repository"
+            tag: 
+              type: "string"
+              default: "1.0.1-scratch-r2"
+              description: "RabbitMQ Default User Credential Updater Image tag (immutable tags are recommended)"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "RabbitMQ Default User Credential Updater Image pull secrets"
+        clusterOperator: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "&reg;abbitMQ Cluster Operator image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/rabbitmq-cluster-operator"
+                  description: "&reg;abbitMQ Cluster Operator image repository"
+                tag: 
+                  type: "string"
+                  default: "1.11.1-scratch-r2"
+                  description: "&reg;abbitMQ Cluster Operator image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "&reg;abbitMQ Cluster Operator image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "&reg;abbitMQ Cluster Operator image pull secrets"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of &reg;abbitMQ Cluster Operator replicas to deploy"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternative scheduler"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on &reg;abbitMQ Cluster Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on &reg;abbitMQ Cluster Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on &reg;abbitMQ Cluster Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the &reg;abbitMQ Cluster Operator containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the &reg;abbitMQ Cluster Operator containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled &reg;abbitMQ Cluster Operator pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set &reg;abbitMQ Cluster Operator pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled &reg;abbitMQ Cluster Operator containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set &reg;abbitMQ Cluster Operator containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force running the container as non root"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "&reg;abbitMQ Cluster Operator pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for &reg;abbitMQ Cluster Operator pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for &reg;abbitMQ Cluster Operator pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for &reg;abbitMQ Cluster Operator pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for &reg;abbitMQ Cluster Operator pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for &reg;abbitMQ Cluster Operator pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "&reg;abbitMQ Cluster Operator statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "&reg;abbitMQ Cluster Operator pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the &reg;abbitMQ Cluster Operator container(s) to automate configuration before or after startup"
+            containerPorts: 
+              type: "object"
+              properties: 
+                metrics: 
+                  type: "number"
+                  default: 9782
+                  description: "&reg;abbitMQ Cluster Operator container port (used for metrics)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to &reg;abbitMQ Cluster Operator nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for &reg;abbitMQ Cluster Operator nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for &reg;abbitMQ Cluster Operator nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the &reg;abbitMQ Cluster Operator pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the &reg;abbitMQ Cluster Operator container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the &reg;abbitMQ Cluster Operator pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the &reg;abbitMQ Cluster Operator pod(s)"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether RBAC resources should be created"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Add annotations"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount API credentials for a service account."
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a service for accessing the metrics endpoint"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "&reg;abbitMQ Cluster Operator metrics service type"
+                    ports: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "number"
+                          default: 80
+                          description: "&reg;abbitMQ Cluster Operator metrics service HTTP port"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "Node port for HTTP"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "&reg;abbitMQ Cluster Operator metrics service Cluster IP"
+                    extraPorts: 
+                      type: "array"
+                      default: "[]"
+                      description: "Extra ports to expose (normally used with the `sidecar` value)"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "&reg;abbitMQ Cluster Operator metrics service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "&reg;abbitMQ Cluster Operator metrics service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "&reg;abbitMQ Cluster Operator metrics service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for &reg;abbitMQ Cluster Operator metrics service"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Specify if a servicemonitor will be deployed for prometheus-operator"
+                    jobLabel: 
+                      type: "string"
+                      default: "app.kubernetes.io/name"
+                      description: "Specify the jobLabel to use for the prometheus-operator"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "Honor metrics labels"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "Prometheus instance selector labels"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: ""
+                      description: "Timeout after which the scrape is ended"
+                    interval: 
+                      type: "string"
+                      default: ""
+                      description: "Scrape interval. If not set, the Prometheus default scrape interval is used"
+                    additionalLabels: 
+                      type: "object"
+                      default: "{}"
+                      description: "Used to pass Labels that are required by the installed Prometheus Operator"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify additional relabeling of metrics"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify general relabeling"
+        msgTopologyOperator: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "RabbitMQ Messaging Topology Operator image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/rmq-messaging-topology-operator"
+                  description: "RabbitMQ Messaging Topology Operator image repository"
+                tag: 
+                  type: "string"
+                  default: "1.3.0-scratch-r0"
+                  description: "RabbitMQ Messaging Topology Operator image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "RabbitMQ Messaging Topology Operator image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "RabbitMQ Messaging Topology Operator image pull secrets"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of RabbitMQ Messaging Topology Operator replicas to deploy"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternative scheduler"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on RabbitMQ Messaging Topology Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on RabbitMQ Messaging Topology Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on RabbitMQ Messaging Topology Operator nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            existingWebhookCertSecret: 
+              type: "string"
+              default: ""
+              description: "name of a secret containing the certificates (use it to avoid certManager creating one)"
+            existingWebhookCertCABundle: 
+              type: "string"
+              default: ""
+              description: "PEM-encoded CA Bundle of the existing secret provided in existingWebhookCertSecret (only if useCertManager=false)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the RabbitMQ Messaging Topology Operator containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the RabbitMQ Messaging Topology Operator containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled RabbitMQ Messaging Topology Operator pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set RabbitMQ Messaging Topology Operator pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled RabbitMQ Messaging Topology Operator containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set RabbitMQ Messaging Topology Operator containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force running the container as non root"
+            fullnameOverride: 
+              type: "string"
+              default: ""
+              description: "String to fully override rmqco.msgTopologyOperator.fullname template"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "RabbitMQ Messaging Topology Operator pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for RabbitMQ Messaging Topology Operator pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for RabbitMQ Messaging Topology Operator pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for RabbitMQ Messaging Topology Operator pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for RabbitMQ Messaging Topology Operator pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for RabbitMQ Messaging Topology Operator pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "RabbitMQ Messaging Topology Operator statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "RabbitMQ Messaging Topology Operator pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the RabbitMQ Messaging Topology Operator container(s) to automate configuration before or after startup"
+            containerPorts: 
+              type: "object"
+              properties: 
+                metrics: 
+                  type: "number"
+                  default: 8080
+                  description: "RabbitMQ Messaging Topology Operator container port (used for metrics)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to RabbitMQ Messaging Topology Operator nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for RabbitMQ Messaging Topology Operator nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for RabbitMQ Messaging Topology Operator nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the RabbitMQ Messaging Topology Operator pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the RabbitMQ Messaging Topology Operator container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the RabbitMQ Messaging Topology Operator pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the RabbitMQ Messaging Topology Operator pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "RabbitMQ Messaging Topology Operator webhook service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    webhook: 
+                      type: "number"
+                      default: 443
+                      description: "RabbitMQ Messaging Topology Operator webhook service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "RabbitMQ Messaging Topology Operator webhook service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "RabbitMQ Messaging Topology Operator webhook service Load Balancer IP"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "RabbitMQ Messaging Topology Operator webhook service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "RabbitMQ Messaging Topology Operator webhook service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for RabbitMQ Messaging Topology Operator webhook service"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether RBAC resources should be created"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Add annotations"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount API credentials for a service account."
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a service for accessing the metrics endpoint"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "&reg;abbitMQ Cluster Operator metrics service type"
+                    ports: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "number"
+                          default: 80
+                          description: "&reg;abbitMQ Cluster Operator metrics service HTTP port"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "Node port for HTTP"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "&reg;abbitMQ Cluster Operator metrics service Cluster IP"
+                    extraPorts: 
+                      type: "array"
+                      default: "[]"
+                      description: "Extra ports to expose (normally used with the `sidecar` value)"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "&reg;abbitMQ Cluster Operator metrics service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "&reg;abbitMQ Cluster Operator metrics service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "&reg;abbitMQ Cluster Operator metrics service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for &reg;abbitMQ Cluster Operator metrics service"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Specify if a servicemonitor will be deployed for prometheus-operator"
+                    jobLabel: 
+                      type: "string"
+                      default: "app.kubernetes.io/name"
+                      description: "Specify the jobLabel to use for the prometheus-operator"
+                    additionalLabels: 
+                      type: "object"
+                      default: "{}"
+                      description: "Used to pass Labels that are required by the installed Prometheus Operator"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "Prometheus instance selector labels"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "Honor metrics labels"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: ""
+                      description: "Timeout after which the scrape is ended"
+                    interval: 
+                      type: "string"
+                      default: ""
+                      description: "Scrape interval. If not set, the Prometheus default scrape interval is used"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify additional relabeling of metrics"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify general relabeling"
+        useCertManager: 
+          type: "boolean"
+          default: false
+          description: "Deploy cert-manager objects (Issuer and Certificate) for webhooks"
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/rabbitmq-cluster-operator.tap.oss:2.3.1
+      template:
+      - helmTemplate:
+          path: "config/"
+      - kbld:
+          paths:
+          - "-"
+          - ".imgpkg/images.yml"
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: jenkins.tap.oss
+spec:
+  displayName: "jenkins"
+  longDescription: "bitnami - jenkins Helm Chart"
+  shortDescription: "jenkins Helm Chart"
+  categories:
+  - auto-generated
+  - helm
+  - jenkins
+  - ci
+  - cd
+  - http
+  - web
+  - application

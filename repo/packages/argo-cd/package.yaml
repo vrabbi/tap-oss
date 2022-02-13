@@ -1,0 +1,2289 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: argo-cd.tap.oss.3.0.4
+spec:
+  refName: argo-cd.tap.oss
+  version: 3.0.4
+  releaseNotes: |
+        Argo CD is a continuous delivery tool for Kubernetes based on GitOps.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Argo CD image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/argo-cd"
+              description: "Argo CD image repository"
+            tag: 
+              type: "string"
+              default: "2.2.5-debian-10-r0"
+              description: "Argo CD image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Argo CD image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Argo CD image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable Argo CD image debug mode"
+        controller: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Argo CD replicas to deploy"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Argo CD nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Argo CD nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Argo CD nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Argo CD containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Argo CD containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Argo CD container's Security Context runAsNonRoot"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the application controller service account"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for service account. Evaluated as a template. Only used if `create` is `true`."
+            clusterAdminAccess: 
+              type: "boolean"
+              default: true
+              description: "Enable K8s cluster admin access for the application controller"
+            clusterRoleRules: 
+              type: "array"
+              default: "[]"
+              description: "Use custom rules for the application controller's cluster role"
+            logFormat: 
+              type: "string"
+              default: "text"
+              description: "Format for the Argo CD application controller logs. Options: [text, json]"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for the Argo CD application controller"
+            containerPorts: 
+              type: "object"
+              properties: 
+                controller: 
+                  type: "number"
+                  default: 8082
+                  description: "Argo CD application controller port number"
+                metrics: 
+                  type: "number"
+                  default: 8082
+                  description: "Argo CD application controller metrics port number"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Argo CD service type"
+                port: 
+                  type: "number"
+                  default: 8082
+                  description: "Argo CD application controller service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for Argo CD application controller service"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD application controller service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD application controller service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Argo CD application controller service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Argo CD application controller service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Argo CD application controller service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                sessionAffinityConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional settings for the sessionAffinity"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Argo CD application controller metrics"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Argo CD application controller service type"
+                    port: 
+                      type: "number"
+                      default: 8082
+                      description: "Argo CD application controller metrics service port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for the application controller service"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD application controller metrics service Cluster IP"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD application controller service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Argo CD application controller service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "Argo CD application controller service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for Argo CD application controller service"
+                    sessionAffinity: 
+                      type: "string"
+                      default: "None"
+                      description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                    sessionAffinityConfig: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional settings for the sessionAffinity"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace which Prometheus is running in"
+                    jobLabel: 
+                      type: "string"
+                      default: ""
+                      description: "The name of the label on the target service to use as the job name in prometheus."
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: "10s"
+                      description: "Timeout after which the scrape is ended"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "RelabelConfigs to apply to samples before scraping"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "MetricRelabelConfigs to apply to samples before ingestion"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "ServiceMonitor selector labels"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "honorLabels chooses the metric's labels on collisions with target labels"
+                rules: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable render extra rules for PrometheusRule object"
+                    spec: 
+                      type: "array"
+                      default: "[]"
+                      description: "Rules to render into the PrometheusRule object"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "Selector for the PrometheusRule object"
+                    namespace: 
+                      type: "string"
+                      default: "monitoring"
+                      description: "Namespace where to create the PrometheusRule object"
+                    additionalLabels: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional lables to add to the PrometheusRule object"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            defaultArgs: 
+              type: "object"
+              properties: 
+                statusProcessors: 
+                  type: "string"
+                  default: "20"
+                  description: "Default status processors for Argo CD controller"
+                operationProcessors: 
+                  type: "string"
+                  default: "10"
+                  description: "Default operation processors for Argo CD controller"
+                appResyncPeriod: 
+                  type: "string"
+                  default: "180"
+                  description: "Default application resync period for Argo CD controller"
+                selfHealTimeout: 
+                  type: "string"
+                  default: "5"
+                  description: "Default self heal timeout for Argo CD controller"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images). Overrides the defaultArgs."
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "Add extra arguments to the default arguments for the Argo CD controller"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Argo CD pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Argo CD pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Argo CD pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `controller.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `controller.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Argo CD pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Argo CD pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Argo CD pods assignment"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default)"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Argo CD statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Argo CD pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Argo CD container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Argo CD nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Argo CD nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Argo CD nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Argo CD pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Argo CD container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Argo CD pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Argo CD pod(s)"
+        server: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Argo CD server replicas to deploy"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Argo CD server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Argo CD server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Argo CD server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Argo CD server containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Argo CD server containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD server pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD server pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD server containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD server containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Argo CD server containers' Security Context runAsNonRoot"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Argo CD server deployment autoscaling"
+                minReplicas: 
+                  type: "number"
+                  default: 1
+                  description: "Argo CD server deployment autoscaling minimum number of replicas"
+                maxReplicas: 
+                  type: "number"
+                  default: 5
+                  description: "Argo CD server deployment autoscaling maximum number of replicas"
+                targetCPU: 
+                  type: "number"
+                  default: 50
+                  description: "Argo CD server deployment autoscaling target CPU percentage"
+                targetMemory: 
+                  type: "number"
+                  default: 50
+                  description: "Argo CD server deployment autoscaling target CPU memory"
+            insecure: 
+              type: "boolean"
+              default: false
+              description: "Disable HTTPS redirection for Argo CD server"
+            logFormat: 
+              type: "string"
+              default: "text"
+              description: "ArgoCD server logs format. Options: [text, json]"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "ArgoCD server logs level"
+            configEnabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Argo CD server config"
+            url: 
+              type: "string"
+              default: ""
+              description: "Argo CD server base URL. Required when configuring SSO. Required when enabling dex."
+            config: 
+              type: "object"
+              default: "{}"
+              description: "Argo CD server configuration that will end on the argocd-cm Config Map"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the creation of an ingress for the Argo CD server"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Path type for the Argo CD server ingress"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Ingress API version for the Argo CD server ingress"
+                hostname: 
+                  type: "string"
+                  default: "argocd.server.local"
+                  description: "Ingress hostname for the Argo CD server ingress"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Argo CD server ingress. To enable certificate autogeneration, place here your cert-manager annotations."
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS for the Argo CD server ingress"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra hosts array for the Argo CD server ingress"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Path array for the Argo CD server ingress"
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra paths for the Argo CD server ingress"
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra TLS configuration for the Argo CD server ingress"
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Secrets array to mount into the Ingress"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                selfSigned: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable metrics for the Argo CD server"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Argo CD server service type"
+                    port: 
+                      type: "number"
+                      default: 8084
+                      description: "Argo CD server metrics service port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for Argo CD server metrics service"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD server metrics service Cluster IP"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD server service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Argo CD server service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "Argo CD server service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for Argo CD server service"
+                    sessionAffinity: 
+                      type: "string"
+                      default: "None"
+                      description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                    sessionAffinityConfig: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional settings for the sessionAffinity"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace which Prometheus is running in"
+                    jobLabel: 
+                      type: "string"
+                      default: ""
+                      description: "The name of the label on the target service to use as the job name in prometheus."
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: "10s"
+                      description: "Timeout after which the scrape is ended"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "RelabelConfigs to apply to samples before scraping"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "MetricRelabelConfigs to apply to samples before ingestion"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "ServiceMonitor selector labels"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "honorLabels chooses the metric's labels on collisions with target labels"
+            ingressGrpc: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the creation of an ingress for the Argo CD gRPC server"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Path type for the Argo CD gRPC server ingress"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Ingress API version for the Argo CD gRPC server ingress"
+                hostname: 
+                  type: "string"
+                  default: "argocd.server.local"
+                  description: "Ingress hostname for the Argo CD gRPC server ingress"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Argo CD gRPC server ingress. To enable certificate autogeneration, place here your cert-manager annotations"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS for the Argo CD server ingress"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra hosts array for the Argo CD gRPC server ingress"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Path array for the Argo CD gRPC server ingress"
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra paths for the Argo CD gRPC server ingress"
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra TLS configuration for the Argo CD gRPC server ingress"
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Secrets array to mount into the Ingress"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                selfSigned: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            containerPorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 8080
+                  description: "Argo CD server HTTP container port"
+                https: 
+                  type: "number"
+                  default: 8443
+                  description: "Argo CD server HTTPS container port"
+                metrics: 
+                  type: "number"
+                  default: 8083
+                  description: "Argo CD server metrics container port"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Argo CD service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 80
+                      description: "HTTP port for the gRPC ingress when enabled"
+                    https: 
+                      type: "number"
+                      default: 443
+                      description: "HTTPS port for the gRPC ingress when enabled"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    https: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTPS"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Argo CD service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Argo CD service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Argo CD service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                sessionAffinityConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional settings for the sessionAffinity"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "concat to the default args"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Argo CD server pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Argo CD server pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Argo CD server pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `server.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `server.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Argo CD server pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Argo CD server pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Argo CD server pods assignment"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default)"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Argo CD server statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Argo CD server pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Argo CD server container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Argo CD server nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Argo CD server nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Argo CD server nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Argo CD server pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Argo CD server container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Argo CD server pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Argo CD server pod(s)"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the server service account"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for service account. Evaluated as a template. Only used if `create` is `true`."
+        repoServer: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Argo CD repo server replicas to deploy"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Argo CD repo server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Argo CD repo server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Argo CD repo server nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Argo CD repo server containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Argo CD repo server containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD repo server pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD repo server pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Argo CD repo server containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Argo CD repo server containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Argo CD repo server containers' Security Context runAsNonRoot"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Repo server service type"
+                port: 
+                  type: "number"
+                  default: 8081
+                  description: "Repo server service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for the repo server service"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Repo server service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Repo server service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Repo server service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Repo server service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Repo server service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                sessionAffinityConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional settings for the sessionAffinity"
+            logFormat: 
+              type: "string"
+              default: "text"
+              description: "Format for the Argo CD repo server logs. Options: [text, json]"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for the Argo CD repo server"
+            containerPorts: 
+              type: "object"
+              properties: 
+                repoServer: 
+                  type: "number"
+                  default: 8081
+                  description: "Container port for Argo CD repo server"
+                metrics: 
+                  type: "string"
+                  default: ""
+                  description: "Metrics port for Argo CD repo server"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable metrics for the Argo CD repo server"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Argo CD repo server service type"
+                    port: 
+                      type: "number"
+                      default: 8084
+                      description: "Argo CD repo server metrics service port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for the repo server metrics service"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD repo server metrics service Cluster IP"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Argo CD repo server service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Argo CD repo server service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "Argo CD repo server service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for Argo CD repo server service"
+                    sessionAffinity: 
+                      type: "string"
+                      default: "None"
+                      description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                    sessionAffinityConfig: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional settings for the sessionAffinity"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace which Prometheus is running in"
+                    jobLabel: 
+                      type: "string"
+                      default: ""
+                      description: "The name of the label on the target service to use as the job name in prometheus."
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: "10s"
+                      description: "Timeout after which the scrape is ended"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "RelabelConfigs to apply to samples before scraping"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "MetricRelabelConfigs to apply to samples before ingestion"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "ServiceMonitor selector labels"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "honorLabels chooses the metric's labels on collisions with target labels"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Argo CD repo server deployment autoscaling"
+                minReplicas: 
+                  type: "number"
+                  default: 1
+                  description: "Argo CD repo server deployment autoscaling minimum number of replicas"
+                maxReplicas: 
+                  type: "number"
+                  default: 5
+                  description: "Argo CD repo server deployment autoscaling maximum number of replicas"
+                targetCPU: 
+                  type: "number"
+                  default: 50
+                  description: "Argo CD repo server deployment autoscaling target CPU percentage"
+                targetMemory: 
+                  type: "number"
+                  default: 50
+                  description: "Argo CD repo server deployment autoscaling target CPU memory"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount for repo server should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount for repo server to use."
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the repo server service account"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for service account. Evaluated as a template. Only used if `create` is `true`."
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "Add extra args to the default repo server args"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Argo CD repo server pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Argo CD repo server pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Argo CD repo server pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `repoServer.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `repoServer.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `repoServer.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `repoServer.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `repoServer.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Argo CD repo server pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Argo CD repo server pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Argo CD repo server pods assignment"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default)"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Argo CD repo server statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Argo CD repo server pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Argo CD repo server container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Argo CD repo server nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Argo CD repo server nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Argo CD repo server nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Argo CD repo server pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Argo CD repo server container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Argo CD repo server pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Argo CD repo server pod(s)"
+        dex: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Dex image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/dex"
+                  description: "Dex image repository"
+                tag: 
+                  type: "string"
+                  default: "2.30.3-debian-10-r2"
+                  description: "Dex image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Dex image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Dex image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Dex image debug mode"
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the creation of a Dex deployment for SSO"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Dex replicas to deploy"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Dex nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Dex nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Dex nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Dex containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Dex containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Dex pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Dex pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Dex containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Dex containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Dex containers' Security Context runAsNonRoot"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Dex service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 5556
+                      description: "Dex HTTP service port"
+                    grpc: 
+                      type: "number"
+                      default: 5557
+                      description: "Dex grpc service port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "HTTP node port for the Dex service"
+                    grpc: 
+                      type: "string"
+                      default: ""
+                      description: "gRPC node port for the Dex service"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Dex service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Dex service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Dex service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Dex service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Dex service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                sessionAffinityConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional settings for the sessionAffinity"
+            containerPorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 5556
+                  description: "Dex container HTTP port"
+                grpc: 
+                  type: "number"
+                  default: 5557
+                  description: "Dex gRPC port"
+                metrics: 
+                  type: "number"
+                  default: 5558
+                  description: "Dex metrics port"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable metrics for Dex"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Dex service type"
+                    port: 
+                      type: "number"
+                      default: 5558
+                      description: "Dex metrics service port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for the Dex service"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Dex service metrics service Cluster IP"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Dex service Load Balancer IP"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Dex service Load Balancer sources"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "Dex service external traffic policy"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for Dex service"
+                    sessionAffinity: 
+                      type: "string"
+                      default: "None"
+                      description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+                    sessionAffinityConfig: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional settings for the sessionAffinity"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace which Prometheus is running in"
+                    jobLabel: 
+                      type: "string"
+                      default: ""
+                      description: "The name of the label on the target service to use as the job name in prometheus."
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: "10s"
+                      description: "Timeout after which the scrape is ended"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "RelabelConfigs to apply to samples before scraping"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "MetricRelabelConfigs to apply to samples before ingestion"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "ServiceMonitor selector labels"
+                    honorLabels: 
+                      type: "boolean"
+                      default: false
+                      description: "honorLabels chooses the metric's labels on collisions with target labels"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created for Dex"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Automount service account token for the Dex service account"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for service account. Evaluated as a template. Only used if `create` is `true`."
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "Add extra args to the default args for Dex"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Dex pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Dex pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Dex pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `dex.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `dex.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `dex.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `dex.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `dex.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Dex pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Dex pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Dex pods assignment"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default)"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for pod assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Dex statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Dex pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Dex container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Dex nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Dex nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Dex nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Dex pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Dex container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Dex pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Dex pod(s)"
+        config: 
+          type: "object"
+          properties: 
+            knownHosts: 
+              type: "string"
+              default: "\"\""
+              description: "Known hosts to be added to the known hosts list by default. Check the values to see the default value"
+            extraKnownHosts: 
+              type: "string"
+              default: ""
+              description: "Add extra known hosts to the known hosts list"
+            createExtraKnownHosts: 
+              type: "boolean"
+              default: true
+              description: "Whether to create or not the extra known hosts configmap"
+            styles: 
+              type: "string"
+              default: ""
+              description: "Custom CSS styles"
+            existingStylesConfigmap: 
+              type: "string"
+              default: ""
+              description: "Use an existing styles configmap"
+            tlsCerts: 
+              type: "object"
+              default: "{}"
+              description: "TLS certificates used to verify the authenticity of the repository servers"
+            secret: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to create or not the secret"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "General secret extra annotations"
+                githubSecret: 
+                  type: "string"
+                  default: ""
+                  description: "GitHub secret to configure webhooks"
+                gitlabSecret: 
+                  type: "string"
+                  default: ""
+                  description: "GitLab secret to configure webhooks"
+                bitbucketServerSecret: 
+                  type: "string"
+                  default: ""
+                  description: "BitBucket secret to configure webhooks"
+                bitbucketUUID: 
+                  type: "string"
+                  default: ""
+                  description: "BitBucket UUID to configure webhooks"
+                gogsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Gogs secret to configure webhooks"
+                extra: 
+                  type: "object"
+                  default: "{}"
+                  description: "Extra keys to add to the configuration secret."
+                argocdServerTlsConfig: 
+                  type: "object"
+                  properties: 
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "TLS key for the Argo CD config secret"
+                    crt: 
+                      type: "string"
+                      default: ""
+                      description: "TLS certificate for the Argo CD config secret"
+                argocdServerAdminPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD server admin password. Autogenerated by default."
+                argocdServerAdminPasswordMtime: 
+                  type: "string"
+                  default: ""
+                  description: "Argo CD server password modification time"
+                repositoryCredentials: 
+                  type: "object"
+                  default: "{}"
+                  description: "Repository credentials to add to the Argo CD server confgi secret"
+            clusterCredentials: 
+              type: "array"
+              default: "[]"
+              description: "Configure external cluster credentials"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r329"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether RBAC resources should be created"
+        redis: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Argo CD controller image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/redis"
+                  description: "Argo CD controller image repository"
+                tag: 
+                  type: "string"
+                  default: "6.2.6-debian-10-r120"
+                  description: "Argo CD controller image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Argo CD controller image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Argo CD controller image pull secrets"
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Redis dependency"
+            nameOverride: 
+              type: "string"
+              default: ""
+              description: "Name override for the Redis dependency"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 6379
+                  description: "Service port for Redis dependency"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Redis dependency authentication"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret to load redis dependency password"
+                existingSecretPasswordKey: 
+                  type: "string"
+                  default: "redis-password"
+                  description: "Pasword key name inside the existing secret"
+        externalRedis: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "External Redis host"
+            port: 
+              type: "number"
+              default: 6379
+              description: "External Redis port"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Redis password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Existing secret for the external redis"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: "redis-password"
+              description: "Password key for the existing secret containing the external redis password"
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: ghcr.io/vrabbi/argo-cd.tap.oss:3.0.4
+      template:
+      - helmTemplate:
+          path: "config/"
+      - kbld:
+          paths:
+          - "-"
+          - ".imgpkg/images.yml"
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

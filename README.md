@@ -22,7 +22,12 @@ This package repository includes the following packages:
 11. **knative-serving.tap.oss** - This is the TCE Knative Serving package simply in the same repo to not have a requirement to install the TCE repo as well  
 12. **cert-manager.tap.oss** - This is the TCE Cert Manager package simply in the same repo to not have a requirement to install the TCE repo as well  
 13. **contour.tap.oss** - This is the TCE Contour package simply in the same repo to not have a requirement to install the TCE repo as well  
-
+These Following Packages are installed seperately and offer additional tooling not part of TAP:  
+14. **rabbitmq-cluster-operator.tap.oss** - [Seperate Installation] Deploys the RabbitMQ Cluster Operator and the Topology Operator. can be useful for the Service Bindings Supply Chain.  
+15. **argo-cd.tap.oss** - [Seperate Installation] Deploys ArgoCD. Can be useful when using GitOps Supply Chains for delivery in different clusters.  
+16. **argo-workflows.tap.oss** - [Seperate Installation] Deploys Argo Workflows. Can be used as an alternative to Tekton for steps in a supply chain.  
+17. **jenkins.tap.oss** - [Seperate Installation] Deploys Jenkins server. can be useful in custom supply chains in brownfield environments where jenkins would be used for testing / CI tasks  
+  
 ## Installation instructions
 ### TCE and TKGm 1.4+ users can skip to step 3 right away
 If you are not running on a TKGm 1.4+ or TCE 0.9.1+ cluster, you must install the Tanzu CLI on your machine and install Kapp Controller in your cluster.  
@@ -53,7 +58,7 @@ kubectl create namespace tap-oss
 ```  
 2. Install the Package repository  
 ```bash
-tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.2
+tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.3
 ```  
 3. Create a values file for installing the platform
 ```bash
@@ -125,7 +130,7 @@ EOF
 &nbsp;&nbsp;&nbsp;&nbsp;Check out the [INSTALL_VALUES_EXPLANATION.md](INSTALL_VALUES_EXPLANATION.md) file for more info on the configuration parameters
 5. Install the Platform  
 ```bash
-tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.2 -f tap-oss-values.yaml
+tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.3 -f tap-oss-values.yaml
 ```  
 5. Wait for all package installs to reconcile
 ```bash

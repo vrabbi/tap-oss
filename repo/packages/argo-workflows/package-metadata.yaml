@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: argo-workflows.tap.oss
+spec:
+  displayName: "argo-workflows"
+  longDescription: "bitnami - argo-workflows Helm Chart"
+  shortDescription: "argo-workflows Helm Chart"
+  categories:
+  - auto-generated
+  - helm
+  - Devops
+  - Kubernetes
+  - Jobs
+  - Continuous delivery
+  - Continous deployment

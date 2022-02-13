@@ -2,6 +2,20 @@
 apiVersion: imgpkg.carvel.dev/v1alpha1
 images:
 - annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/argo-cd.tap.oss:3.0.4
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 3.0.4
+          url: ghcr.io/vrabbi/argo-cd.tap.oss:3.0.4
+  image: ghcr.io/vrabbi/argo-cd.tap.oss@sha256:d7d3e33fd5b06f001fa018444c5703fa2d884a089fd27b07b3b5eb6d434b2cbe
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/argo-workflows.tap.oss:0.2.5
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.2.5
+          url: ghcr.io/vrabbi/argo-workflows.tap.oss:0.2.5
+  image: ghcr.io/vrabbi/argo-workflows.tap.oss@sha256:275d6a65d7941a82d1478b038332ebcd1cf22e65fa04ddebdd3265683f38f152
+- annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/cartographer-package:0.2.1
     kbld.carvel.dev/origins: |
       - resolved:
@@ -30,6 +44,13 @@ images:
           url: ghcr.io/vrabbi/flux-source-controller-package:v0.21.1
   image: ghcr.io/vrabbi/flux-source-controller-package@sha256:e20ebc397001f4b274a92a821f15598fd960007d6b24bd5e8a7ddb1e2312927a
 - annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/jenkins.tap.oss:8.1.7
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 8.1.7
+          url: ghcr.io/vrabbi/jenkins.tap.oss:8.1.7
+  image: ghcr.io/vrabbi/jenkins.tap.oss@sha256:4577242c3cd4807f865ee823b989a87ac9fa4b71abb73a3903e6c53cd463f470
+- annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/kpack-config-package:0.5.2
     kbld.carvel.dev/origins: |
       - resolved:
@@ -44,14 +65,21 @@ images:
           url: ghcr.io/vrabbi/ootb-supply-chains-package:0.2.1
   image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:7709e655c803058e9125381bfd459a31830a6a5c518a9e5cbeb79ab4ffa6ae46
 - annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/rabbitmq-cluster-operator.tap.oss:2.3.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 2.3.1
+          url: ghcr.io/vrabbi/rabbitmq-cluster-operator.tap.oss:2.3.1
+  image: ghcr.io/vrabbi/rabbitmq-cluster-operator.tap.oss@sha256:880109ec92d6ac3ea71bd7f0c13be1e1ac8dcb5a4ccce2c4370a79f9d1e11902
+- annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
   image: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.2
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.3
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.2.2
-          url: ghcr.io/vrabbi/tap-oss-package:0.2.2
+          tag: 0.2.3
+          url: ghcr.io/vrabbi/tap-oss-package:0.2.3
   image: ghcr.io/vrabbi/tap-oss-package@sha256:a700af38356e30594fb733735c00114ff15909abb35b10bb0ddbabae1cecfc3f
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
