@@ -1,0 +1,52 @@
+kpack:
+  kp_default_repository: "harbor.example.com/tap-oss"
+  kp_default_repository_password: "Harbor12345"
+  kp_default_repository_username: "admin"
+kpack_config:
+  builder:
+    tag: "harbor.example.com/tap-oss/builder"
+knative:
+  domain:
+    type: real
+    name: tap.example.com
+dev_ns_preperation:
+  registry:
+    username: "admin"
+    password: "Harbor12345"
+    server: "harbor.example.com"
+  namespaces:
+  - name: "default"
+    exists: true
+    createPipeline: true
+    language: go
+    gitops:
+      enabled: true
+      base64_encoded_ssh_key: "FILL ME IN"
+      base64_encoded_known_hosts: ""
+  - name: "team-a"
+    exists: false
+    createPipeline: true
+    language: java
+    gitops:
+      enabled: true
+      base64_encoded_ssh_key: "FILL ME IN"
+      base64_encoded_known_hosts: ""
+ootb_supply_chains:
+  image_prefix: "harbor.example.com/workloads/oss-"
+  gitops:
+    configure: true
+    git_writer:
+      message: "TAP OSS Based Update of app configuration"
+      ssh_user: "git"
+      server: "github.com"
+      repository: "example-github-user/tap-gitops-demo.git"
+      base64_encoded_ssh_key: "FILL ME IN"
+      base64_encoded_known_hosts: ""
+      branch: "oss"
+      username: "example-github-user"
+      user_email: "gitops@tap-oss.example.com"
+      port: ""
+  testing:
+    configure: true
+cert_injection_webhook:
+  ca_cert_data: "FILL ME IN"

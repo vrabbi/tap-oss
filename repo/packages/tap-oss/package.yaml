@@ -1,7 +1,7 @@
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: Package
 metadata:
-  name: tap-install.tap.oss.0.2.1
+  name: tap-install.tap.oss.0.2.2
 spec:
   licenses:
   - Apache 2.0
@@ -14,7 +14,7 @@ spec:
       - kapp: {}
       fetch:
       - imgpkgBundle:
-          image: ghcr.io/vrabbi/tap-oss-package:0.2.1
+          image: ghcr.io/vrabbi/tap-oss-package:0.2.2
       template:
       - ytt:
           paths:
@@ -35,6 +35,22 @@ spec:
               type: object
               additionalProperties: false
               properties:
+                hostPorts:
+                  type: object
+                  additionalProperties: false
+                  properties:
+                    enable:
+                      type: boolean
+                      default: false
+                      description: Enable Host Ports for Envoy (set to true for local docker based clusters)
+                    http: 
+                      type: integer
+                      default: 80
+                      description: HTTP Host Port if contour.envoy.hostPorts.enable is true
+                    https: 
+                      type: integer
+                      default: 443
+                      description: HTTPS Host Port if contour.envoy.hostPorts.enable is true
                 service:
                   type: object
                   additionalProperties: false
@@ -229,5 +245,5 @@ spec:
           description: list of package names to disable (e.g. kpack.tap.oss)
           items:
             type: string
-      title: tap-install.tap.oss.0.2.1 values schema
-  version: 0.2.1
+      title: tap-install.tap.oss.0.2.2 values schema
+  version: 0.2.2

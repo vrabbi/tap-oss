@@ -53,7 +53,7 @@ kubectl create namespace tap-oss
 ```  
 2. Install the Package repository  
 ```bash
-tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.0
+tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.2
 ```  
 3. Create a values file for installing the platform
 ```bash
@@ -125,7 +125,7 @@ EOF
 &nbsp;&nbsp;&nbsp;&nbsp;Check out the [INSTALL_VALUES_EXPLANATION.md](INSTALL_VALUES_EXPLANATION.md) file for more info on the configuration parameters
 5. Install the Platform  
 ```bash
-tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.0 -f tap-oss-values.yaml
+tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.2 -f tap-oss-values.yaml
 ```  
 5. Wait for all package installs to reconcile
 ```bash

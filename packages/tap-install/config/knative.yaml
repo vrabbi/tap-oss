@@ -7,6 +7,13 @@
 #@   end
 #@ end
 #@ if install == True:
+apiVersion: v1
+data:
+  template.yaml: I0AgbG9hZCgiQHl0dDpvdmVybGF5IiwgIm92ZXJsYXkiKQoKI0BvdmVybGF5L21hdGNoIGJ5PW92ZXJsYXkuc3Vic2V0KHsia2luZCI6IkNvbmZpZ01hcCIsICJtZXRhZGF0YSI6IHsibmFtZSI6ICJjb25maWctbmV0d29yayJ9fSkKLS0tCm1ldGFkYXRhOgogIGFubm90YXRpb25zOgogICAgI0BvdmVybGF5L21hdGNoIG1pc3Npbmdfb2s9VHJ1ZQogICAga2FwcC5rMTRzLmlvL3VwZGF0ZS1zdHJhdGVneTogc2tpcApkYXRhOgogICNAb3ZlcmxheS9tYXRjaCBtaXNzaW5nX29rPVRydWUKICAjQHlhbWwvdGV4dC10ZW1wbGF0ZWQtc3RyaW5ncwogIGRvbWFpbi10ZW1wbGF0ZTogInt7Lk5hbWV9fS17ey5OYW1lc3BhY2V9fS57ey5Eb21haW59fSIK
+kind: Secret
+metadata:
+  name: knative-domain-template-overlay
+  namespace: tap-oss
 ---
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageInstall
@@ -16,6 +23,7 @@ metadata:
   annotations:
     kapp.k14s.io/change-rule.serviceaccount: "delete before deleting serviceaccount"
     kapp.k14s.io/change-rule.contour: "upsert after upserting contour"
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: knative-domain-template-overlay
 spec:
   serviceAccountName: tap-oss-install-sa
   packageRef:

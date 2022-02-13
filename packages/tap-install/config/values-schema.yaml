@@ -6,6 +6,15 @@ disabled_packages:
 #@schema/desc "TCE Contour package configuration"
 contour:
   envoy:
+    #@schema/desc "Enable Host Networking for Envoy"
+    hostNetwork: false
+    hostPorts:
+      #@schema/desc "Enable Host Ports for Envoy"
+      enable: false
+      #@schema/desc "HTTP Host Port for envoy if contour.envoy.hostPorts.enabled = true"
+      http: 80
+      #@schema/desc "HTTPS Host Port for envoy if contour.envoy.hostPorts.enabled = true"
+      https: 443
     service:
       #@schema/desc "Service type for Envoy - Set to ClusterIP for local clusters. defaults to LoadBalancer"
       type: LoadBalancer

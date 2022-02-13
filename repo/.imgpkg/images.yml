@@ -47,12 +47,12 @@ images:
     kbld.carvel.dev/id: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
   image: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.1
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.2
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.2.1
-          url: ghcr.io/vrabbi/tap-oss-package:0.2.1
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:fca06300a13022dccc7ef4e9e93d24810bc3aaa2083b18d38d8bfc782ca256d4
+          tag: 0.2.2
+          url: ghcr.io/vrabbi/tap-oss-package:0.2.2
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:a700af38356e30594fb733735c00114ff15909abb35b10bb0ddbabae1cecfc3f
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

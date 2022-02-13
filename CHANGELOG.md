@@ -1,4 +1,10 @@
 # CHANGE LOG FOR THIS REPO
+## 0.2.2
+* Added instructions for running on TCE Unmanaged Clusters (TCE 0.10.0+)
+* Added example values files
+* Added overlay to change the default knative service template
+* Added support for contour to use Host Ports (useful in Kind based clusters like TCE unmanaged clusters)  
+  
 ## 0.2.1
 * Added Gitops supply chain with service bindings using the service claims struct of the workload yaml  
 * Added workload example for binding to a rabbitMQ cluster  
