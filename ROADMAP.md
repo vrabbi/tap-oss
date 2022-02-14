@@ -7,10 +7,6 @@
 * Testing Supply Chain using Argo Workflows for testing - WIP
 * GitOps Supply Chain with Poly Repo Configuration
   
-## **Extend the core packages to include:**
-* [Backstage](https://backstage.io/) - WIP
-* [Backstage Software Templates integration (Similar to App Accelerator)](https://backstage.io/docs/features/software-templates/software-templates-index)
-  
 ## **Create a set of optional packages**
 * [Gitea](https://gitea.io/en-us/) - WIP
 * [PostgreSQL Operator](https://github.com/zalando/postgres-operator)
@@ -26,3 +22,13 @@
 * Add Getting Started Video
 * Add Creating a supply chain Video
 * Add Troubleshooting Video
+
+## Scripts
+End to End script for installing a self contained environment using:
+1. TCE Unmanaged Cluster
+2. Harbor TCE package
+3. Gitea TAP OSS package
+4. Meta Controller and Harbor Project CRD
+5. TAP OSS full stack
+6. RabbitMQ Operator
+
