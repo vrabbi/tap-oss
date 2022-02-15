@@ -4,4 +4,4 @@ metadata:
   name: rabbitmqcluster-sample
 spec:
   service:
-    type: LoadBalancer
+    type: ClusterIP
