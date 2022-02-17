@@ -58,12 +58,12 @@ images:
           url: ghcr.io/vrabbi/kpack-config-package:0.5.2
   image: ghcr.io/vrabbi/kpack-config-package@sha256:d5e14db2df55a33590832876e6c9c662183e10c8c5136e7430a4bc369ecba95b
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.2.1
+    kbld.carvel.dev/id: ghcr.io/vrabbi/ootb-supply-chains-package:0.2.4
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.2.1
-          url: ghcr.io/vrabbi/ootb-supply-chains-package:0.2.1
-  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:7709e655c803058e9125381bfd459a31830a6a5c518a9e5cbeb79ab4ffa6ae46
+          tag: 0.2.4
+          url: ghcr.io/vrabbi/ootb-supply-chains-package:0.2.4
+  image: ghcr.io/vrabbi/ootb-supply-chains-package@sha256:79999e65a3e5677ef08b2a3a60962877ea816bcf6f55235252acb56a2d3bd3bc
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/rabbitmq-cluster-operator.tap.oss:2.3.1
     kbld.carvel.dev/origins: |
@@ -75,12 +75,12 @@ images:
     kbld.carvel.dev/id: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
   image: ghcr.io/vrabbi/service-bindings-package@sha256:e8f52ce61238d3b3f16f0ce0a2f1ae13a4e62e97f0c948457de83025760b66a6
 - annotations:
-    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.3
+    kbld.carvel.dev/id: ghcr.io/vrabbi/tap-oss-package:0.2.4
     kbld.carvel.dev/origins: |
       - resolved:
-          tag: 0.2.3
-          url: ghcr.io/vrabbi/tap-oss-package:0.2.3
-  image: ghcr.io/vrabbi/tap-oss-package@sha256:a700af38356e30594fb733735c00114ff15909abb35b10bb0ddbabae1cecfc3f
+          tag: 0.2.4
+          url: ghcr.io/vrabbi/tap-oss-package:0.2.4
+  image: ghcr.io/vrabbi/tap-oss-package@sha256:dfaa8b2279c433088b98cd41bd8b315a1ef01aa345cc42cb3c58f9d7f9701924
 - annotations:
     kbld.carvel.dev/id: ghcr.io/vrabbi/tekton-package:0.32.1
     kbld.carvel.dev/origins: |

@@ -228,11 +228,11 @@ spec:
               git remote add origin $(runnable.spec.inputs.git_ssh_user)$@$(runnable.spec.inputs.git_server)$:$(runnable.spec.inputs.git_repository)$
             fi
             # TODO remove the fetch and branch
-            git fetch
-            git branch
-            git pull origin "`git remote show origin | grep "HEAD branch" | sed 's/.*: //'`"
-            git pull origin "$BRANCH" || git branch "$BRANCH"
-            git checkout "$BRANCH"
+            #git fetch
+            #git branch
+            git pull origin "`git remote show origin | grep "HEAD branch" | sed 's/.*: //'`" || echo "No Repo"
+            git pull origin "$BRANCH" || git branch "$BRANCH" || echo "No Branch"
+            git checkout -b "$BRANCH"
             export CONFIG_MAP_FIELD=$(runnable.spec.inputs.input_config_map_field)$
             export WORKLOAD_NAME=$(runnable.spec.inputs.input_config_map_name)$
             export DATA="$(runnable.spec.inputs.data)$"
@@ -262,11 +262,6 @@ spec:
         metadata:
           name: (@= data.values.workload.metadata.name @)
           labels:
-            (@- if hasattr(data.values.workload.metadata, "labels"): @)
-            (@- if hasattr(data.values.workload.metadata.labels, "app.kubernetes.io/part-of"): @)
-            app.kubernetes.io/part-of: (@= data.values.workload.metadata.labels["app.kubernetes.io/part-of"] @)
-            (@ end -@)
-            (@ end -@)
             carto.run/workload-name: (@= data.values.workload.metadata.name @)
             app.kubernetes.io/component: run
         spec:

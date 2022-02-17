@@ -1,4 +1,9 @@
 # CHANGE LOG FOR THIS REPO
+## 0.2.4
+* Added a script for deploying a contained Local env (including a git server and registry)
+* Made all Knative configmaps configurable after deployment
+* Update ClusterRunTemplate for GitOps supply chain to support creating a new repo if one doesnt exist (requires support from Git provider. This works for example on Gitea but not Github)
+  
 ## 0.2.3
 * Added Jenkins Package  
 * Added Argo Workflows Package  
