@@ -13,7 +13,7 @@ tanzu um create tap-oss-cls-01 -c calico -p 80:80/tcp -p 443:443/tcp
 ```  
 2. Add the package repository for TAP OSS to the cluster
 ```bash
-tanzu package repository add tap-oss -n tap-oss --create-namespace --url ghcr.io/vrabbi/tap-oss-repo:0.2.3
+tanzu package repository add tap-oss -n tap-oss --create-namespace --url ghcr.io/vrabbi/tap-oss-repo:0.2.4
 ```  
 3. Create a values file replacing the marked fields as needed:
 ```bash
@@ -91,5 +91,5 @@ EOF
 ```  
 4. Install the platform
 ```bash
-tanzu package install tap -p tap-install.tap.oss -v 0.2.3 -n tap-oss -f tap-oss-values.yaml
+tanzu package install tap -p tap-install.tap.oss -v 0.2.4 -n tap-oss -f tap-oss-values.yaml
 ```
