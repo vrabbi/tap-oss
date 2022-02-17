@@ -1,4 +1,12 @@
 # Install instructions for TAP OSS on a TCE unmanaged cluster
+You can install in 1 of 2 ways on TCE unmanaged clusters:
+1. Via an opinionated but self contained and one click install script
+2. Manually with full flexibility of configuration
+
+## Automated Method  
+Please take a look at the relevant [README.md](scripts/README.md#self-contained-local-environment)  
+  
+## Manual Method  
 1. Create a cluster and expose the relevant ports
 ```bash
 tanzu um create tap-oss-cls-01 -c calico -p 80:80/tcp -p 443:443/tcp
