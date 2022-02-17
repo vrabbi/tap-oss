@@ -2,7 +2,7 @@
 
 ## Overview
 This repo contains the source configuration built for a TAP OSS stack installation.  
-This Package repository has been tested on TCE 0.9.1 and TKGm 1.4 and works with the installed versions of Kapp Controller and doesnt require upgrading of Kapp Controller nor does it require secretgen inorder to work.  
+This Package repository has been tested on TCE 0.10.0 and TKGm 1.4 and works with the installed versions of Kapp Controller and doesnt require upgrading of Kapp Controller nor does it require secretgen inorder to work.  
 ## Why
 Tanzu Application Platform is an amazing platform and is vastly built on open source projects. This repo brings together the Open source tools that are part of TAP into an easy installation method similar to TAP for the OSS community.  
 As not everyone has licensing for the TAP, this is meant as a way to play with the underlying technologies and understand at least in part what TAP "feels like".  
@@ -35,7 +35,7 @@ If you are not running on a TKGm 1.4+ or TCE 0.9.1+ cluster, you must install th
 ```bash
 curl -H "Accept: application/vnd.github.v3.raw" \
     -L https://api.github.com/repos/vmware-tanzu/community-edition/contents/hack/get-tce-release.sh | \
-    bash -s v0.9.1 linux
+    bash -s v0.10.0 linux
 ```  
 * Mac
 ```bash
@@ -57,7 +57,7 @@ kubectl create namespace tap-oss
 ```  
 2. Install the Package repository  
 ```bash
-tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.3
+tanzu package repository add tap-oss -n tap-oss --url ghcr.io/vrabbi/tap-oss-repo:0.2.4
 ```  
 3. Create a values file for installing the platform
 ```bash
@@ -129,7 +129,7 @@ EOF
 &nbsp;&nbsp;&nbsp;&nbsp;Check out the [INSTALL_VALUES_EXPLANATION.md](INSTALL_VALUES_EXPLANATION.md) file for more info on the configuration parameters
 5. Install the Platform  
 ```bash
-tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.3 -f tap-oss-values.yaml
+tanzu package install tap -n tap-oss -p tap-install.tap.oss -v 0.2.4 -f tap-oss-values.yaml
 ```  
 5. Wait for all package installs to reconcile
 ```bash
